@@ -4,7 +4,19 @@ require_once "connection/ApiController.php";
 $portCont = new portalController();
 
 
+
 $userSession = $portCont->getUserDetails($session_id);
+
+if($userSession[0]['designation'] == 3){
+$uid = $userSession[0]['uid'];
+$info = $portCont->getStudentDetails($uid);
+$apiUrl = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . urlencode($uid);
+}
+
+if($userSession[0]['designation'] == 2){
+    $uid = $userSession[0]['uid'];
+$tinfo = $portCont->myTeacherInformation($uid);
+}
 
 $email = $userSession[0]['email'];
 $position = strpos($email, '@');
@@ -13,6 +25,8 @@ $filteredEmail = substr($email, 0, $position);
 // Convert to uppercase
 $filteredEmail = strtoupper($filteredEmail);
 
+$studStat = $portCont->checkTotalStudentForTheActivatedSY();
+$teacherStat = $portCont->checkTotalTeacherForTheActivatedSY();
 
 if (! empty($_GET["action"])) {
     switch ($_GET["action"]) {
@@ -494,6 +508,56 @@ if (! empty($_GET["action"])) {
                                 header('Location: home.php?view=lost&message=success');
                             }else{
                                 header('Location: home.php?view=lost&message=error');
+                            }
+                        }
+                        break;
+
+                    case "verification":
+                        if(isset($_POST['verification'])){
+                            $code = $_POST['code']; 
+                            $rcode = $_POST['rcode']; 
+                            $password = $_POST['password'];
+                            if(!empty($code) && !empty($rcode) && !empty($password))
+                            {
+                                if($code == $rcode){
+                                    $email = $userSession[0]['email'];
+                                    $hash = md5($password);
+                                    require "api/mailler/newpassgeneric.php";
+                                    $portCont->verifyUserCredentials($code, $hash);
+                                    header('Location: home.php?view=home');
+                                }else{
+                                    header('Location: security.php?view=verification&message=error');
+                                }
+                            }else{
+                                header('Location: security.php?view=verification&message=error');
+                            }
+                        }
+                        break;
+
+                    case "assignTeachSection":
+                        if(isset($_POST['add']))
+                        {
+                            $uid = $_POST['uid']; 
+                            $sycode = $_POST['sycode']; 
+                            $sid = $_POST['sid'];
+                            if(!empty($_POST['uid']) && !empty($_POST['sycode']) && !empty($_POST['sid']))
+                            {
+                                $checkExst = $portCont->checkIfExistingAlreadyTeacher($uid); 
+                                if(!empty($checkExst))
+                                {
+                                    $prevSycode = $checkExst[0]['sycode'];
+                                    $prevSid = $checkExst[0]['sid'];
+                                    $portCont->updateSectionForTeacher($uid, $sycode, $sid);
+                                    $portCont->insertSectionForTeacherHistory($uid, $prevSycode, $prevSid);
+                                    // tbl_assigned_teacher_section_history
+                                    header('Location: home.php?view=teacher-accounts&message=success');
+                                }else{
+                                    $portCont->addSectionForTeacher($uid, $sycode, $sid);
+                                    header('Location: home.php?view=teacher-accounts&message=success');
+                                }
+                                header('Location: home.php?view=teacher-accounts&message=success');
+                            }else{
+                                header('Location: home.php?view=teacher-accounts&message=error');
                             }
                         }
                         break;

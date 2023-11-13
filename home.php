@@ -96,7 +96,7 @@
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
-                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                        <img class="rounded-circle" src="img/user.png" alt="" style="width: 40px; height: 40px;">
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
@@ -131,7 +131,7 @@
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <img class="rounded-circle me-lg-2" src="img/user.png" alt="" style="width: 40px; height: 40px;">
                             <span class="d-none d-lg-inline-flex"><?php echo strtoupper($filteredEmail); ?></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
@@ -144,7 +144,7 @@
             </nav>
             <!-- Navbar End -->
 
-
+            <?php if(($userSession[0]['designation'])  == 1) { ?>      
             <?php if(!empty($_GET['view'])){ ?>
             <?php if($_GET['view'] == 'home') { ?>
             <?php include('route/admin-home.php'); ?>
@@ -175,6 +175,37 @@
             <?php } else { ?>
             <?php include('route/admin-home.php'); ?>
             <?php } ?>
+            <?php }else if(($userSession[0]['designation']) == 3) { ?>
+            <?php if(!empty($_GET['view'])){ ?>
+            <?php if($_GET['view'] == 'home') { ?>
+            <?php include('route/student-home.php'); ?>
+            <?php } else if($_GET['view'] == 'request') { ?>
+            <?php include('route/student-request.php'); ?>
+            <?php } else if($_GET['view'] == 'request_history') { ?>
+            <?php include('route/student-request_history.php'); ?>
+            <?php } else if($_GET['view'] == 'myclass') { ?>
+            <?php include('route/student-class.php'); ?>
+            <?php } else if($_GET['view'] == 'monitoring') { ?>
+            <?php include('route/student-monitoring.php'); ?>
+            <?php } else { ?>
+
+            <?php } ?>
+            <?php }  else { ?>
+            <?php include('route/student-home.php'); ?>
+            <?php }  ?>
+            <?php }else{ ?>
+            <?php if(!empty($_GET['view'])){ ?>
+            <?php if($_GET['view'] == 'home') { ?>
+            <?php include('route/teacher-home.php'); ?>
+            <?php } else if($_GET['view'] == 'attendance') { ?>
+            <?php include('route/teacher-attendance.php'); ?>
+            <?php } else if($_GET['view'] == 'mystudent') { ?>
+            <?php include('route/teacher-student.php'); ?>
+            <?php } else { ?>
+
+            <?php } ?>
+            <?php } ?>
+            <?php } ?>
 
 
            
@@ -194,9 +225,6 @@
         </div>
         <!-- Content End -->
 
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
     </div>
 
     <!-- JavaScript Libraries -->
@@ -343,6 +371,26 @@
                 });
             </script>
 
+            <script>
+                function copyInputValue() {
+                    // Get the input element
+                    var inputElement = document.getElementById('myInput');
+
+                    // Select the text in the input
+                    inputElement.select();
+                    inputElement.setSelectionRange(0, 99999); // For mobile devices
+
+                    // Copy the text to the clipboard
+                    document.execCommand('copy');
+
+                    // Deselect the input
+                    inputElement.setSelectionRange(0, 0);
+
+                    // Provide feedback (you can customize this part)
+                    alert('Input value copied: ' + inputElement.value);
+                }
+            </script>
+
 
             <?php } else if($_GET['view'] == 'announcement') { ?>
                 
@@ -366,6 +414,106 @@
                     initializeDataTable('#myAnnouncementTable');
                 });
             </script>
+
+               <?php } else if($_GET['view'] == 'myclass') { ?>
+                
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
+                <script src="datatable/datatable/jquery.dataTables.min.js"></script>
+                <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+                <script>
+                    $(document).ready(function(){
+                        // Function to initialize DataTable and hide alert
+                        function initializeDataTable(tableId) {
+                            $(tableId).DataTable();
+    
+                            // Hide alert on close button click
+                            $(document).on('click', '.close', function(){
+                                $('.alert').hide();
+                            });
+                        }
+    
+                        // Initialize DataTables for different tables
+                        initializeDataTable('#myAttendanceToday');
+                        initializeDataTable('#myAttendanceWeekly');
+                        initializeDataTable('#myAttendanceMonthly');
+                    });
+                </script>
+
+             <?php } else if($_GET['view'] == 'monitoring') { ?>
+                
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
+                <script src="datatable/datatable/jquery.dataTables.min.js"></script>
+                <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+                <script>
+                    $(document).ready(function(){
+                        // Function to initialize DataTable and hide alert
+                        function initializeDataTable(tableId) {
+                            $(tableId).DataTable();
+    
+                            // Hide alert on close button click
+                            $(document).on('click', '.close', function(){
+                                $('.alert').hide();
+                            });
+                        }
+    
+                        // Initialize DataTables for different tables
+                        initializeDataTable('#myMonitoringAttendanceToday');
+                        initializeDataTable('#myMonitoringAttendanceWeekly');
+                        initializeDataTable('#myMonitoringAttendanceMonthly');
+                    });
+                </script>
+
+            <?php } else if($_GET['view'] == 'mystudent') { ?>
+
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
+                <script src="datatable/datatable/jquery.dataTables.min.js"></script>
+                <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+                <script>
+                    $(document).ready(function(){
+                        // Function to initialize DataTable and hide alert
+                        function initializeDataTable(tableId) {
+                            $(tableId).DataTable();
+    
+                            // Hide alert on close button click
+                            $(document).on('click', '.close', function(){
+                                $('.alert').hide();
+                            });
+                        }
+    
+                        // Initialize DataTables for different tables
+                        initializeDataTable('#myStudentTable');
+                    });
+                </script>
+
+            <?php } else if($_GET['view'] == 'attendance') { ?>
+
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
+                <script src="datatable/datatable/jquery.dataTables.min.js"></script>
+                <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+                <script>
+                    $(document).ready(function(){
+                        // Function to initialize DataTable and hide alert
+                        function initializeDataTable(tableId) {
+                            $(tableId).DataTable();
+    
+                            // Hide alert on close button click
+                            $(document).on('click', '.close', function(){
+                                $('.alert').hide();
+                            });
+                        }
+    
+                        // Initialize DataTables for different tables
+                        initializeDataTable('#myMonitoringAttendanceTodayTeacher');
+                        initializeDataTable('#myMonitoringAttendanceWeeklyTeacher');
+                        initializeDataTable('#myMonitoringAttendanceMonthlyTeacher');
+                    });
+                </script>
+
+
             <?php } else if($_GET['view'] == 'lost') { ?>
            
             <?php }  else { ?>

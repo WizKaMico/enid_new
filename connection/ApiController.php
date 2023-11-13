@@ -108,6 +108,25 @@ class portalController extends DBController
        return $userCredentials;
     }
 
+
+    function getStudentDetails($uid)
+    {
+        $query = "SELECT * FROM tbl_user_information TUI LEFT JOIN tbl_user_designation TUD ON TUI.designation = TUD.did LEFT JOIN tbl_school_student_record TSSR ON TUI.uid = TSSR.uid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid 
+        LEFT JOIN  tbl_school_year_details_grade TSYDG ON TSYDG.gid = TSSR.current_level
+        WHERE TUI.uid = ?";
+
+        $params = array(
+           
+           array(
+               "param_type" => "s",
+               "param_value" => $uid
+           )
+       );
+       
+       $userCredentials = $this->getDBResult($query, $params);
+       return $userCredentials;
+    }
+
     function validateSecurity($code, $uid)
     {
         $query = "SELECT * FROM tbl_user_security TUS WHERE TUS.uid = ? AND TUS.code = ?";
@@ -1304,6 +1323,462 @@ class portalController extends DBController
         $allLost = $this->getDBResult($query);
         return $allLost;
     }
+
+    function verifyUserCredentials($code, $hash)
+    {
+        $query = "UPDATE tbl_user_information SET password = ?, status = ? WHERE code = ?";
+        $params = array( 
+            array(
+                "param_type" => "s",
+                "param_value" => $hash
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => 'VERIFIED'
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $code
+            )
+        );
+        $this->updateDB($query, $params);
+    }
+
+    function getStudentEnrollForCurrentSpecificStudentDataSchoolYear($uid)
+    {
+        $query = "SELECT * FROM tbl_school_student_record TSSR LEFT JOIN tbl_user_school_year TUSSY ON TSSR.sycode = TUSSY.sycode WHERE TUSSY.status = 'ACTIVATED' AND TSSR.uid = ?";
+        
+        $params = array( 
+            array(
+                "param_type" => "i",
+                "param_value" => $uid
+            )
+        );
+        
+        $checkRequestInformation = $this->getDBResult($query, $params);
+        return $checkRequestInformation;
+        
+    }
+
+
+    function getStudentRequestSpecificStudentCurrentSchoolYear($uid)
+    {
+        $query = "SELECT *,TSSR.date_created as requestcreationdate,TSSR.status as requeststatus FROM tbl_school_student_request TSSR LEFT JOIN  tbl_user_school_year TUSSY ON TSSR.sycode = TUSSY.sycode LEFT JOIN tbl_school_request_type TSRT ON TSSR.request_type = TSRT.req LEFT JOIN tbl_school_student_record TSR ON TSSR.uid = TSR.uid 
+        LEFT JOIN tbl_school_year_details_grade TSYDG ON TSR.current_level = TSYDG.gid
+        LEFT JOIN tbl_school_year_details_section TSYDS ON TSR.current_section = TSYDS.sid
+        WHERE TUSSY.status = 'ACTIVATED' AND TSSR.uid = ? ORDER BY TSSR.reqid DESC"; 
+
+        $params = array( 
+            array(
+                "param_type" => "i",
+                "param_value" => $uid
+            )
+        );
+
+        $checkRequestInformation = $this->getDBResult($query, $params);
+        return $checkRequestInformation;
+        
+
+    }
+
+    function checkScannedUid($uid)
+    {
+        $query = "SELECT * FROM tbl_user_information TUI LEFT JOIN tbl_user_designation TUD ON TUI.designation = TUD.did LEFT JOIN tbl_school_student_record TSSR ON TUI.uid = TSSR.uid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid 
+        LEFT JOIN  tbl_school_year_details_grade TSYDG ON TSYDG.gid = TSSR.current_level
+        WHERE TUI.uid = ?";
+
+        $params = array(
+           
+           array(
+               "param_type" => "s",
+               "param_value" => $uid
+           )
+       );
+       
+       $userCredentials = $this->getDBResult($query, $params);
+       return $userCredentials;
+    }
+
+    function checkOutputScannedUid($uid)
+    {
+        $query = "SELECT * FROM tbl_user_information TUI LEFT JOIN tbl_user_designation TUD ON TUI.designation = TUD.did LEFT JOIN tbl_school_student_record TSSR ON TUI.uid = TSSR.uid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid 
+        LEFT JOIN  tbl_school_year_details_grade TSYDG ON TSYDG.gid = TSSR.current_level LEFT JOIN tbl_school_monitoring_attendance TSMA ON TUI.uid = TSMA.uid 
+        WHERE TUI.uid = ?";
+
+        $params = array(
+           
+           array(
+               "param_type" => "s",
+               "param_value" => $uid
+           )
+       );
+       
+       $userCredentials = $this->getDBResult($query, $params);
+       return $userCredentials;
+    }
+
+
+    function myScannedUid($uid,$room_id,$date_inserted)
+    {
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TUI WHERE TUI.uid = ? AND room = ? AND date_inserted = ?";
+
+        $params = array(
+           
+           array(
+               "param_type" => "s",
+               "param_value" => $uid
+           ),
+           array(
+            "param_type" => "s",
+            "param_value" => $room_id
+          ),
+           array(
+            "param_type" => "s",
+            "param_value" => $date_inserted
+          )
+       );
+       
+       $userCredentials = $this->getDBResult($query, $params);
+       return $userCredentials;
+    }
+
+    function insertScannedUid($uid,$room_id,$current_time,$date_inserted)
+    {
+        $query = "INSERT INTO tbl_school_monitoring_attendance (room, uid, timein, date_inserted) VALUES (?, ?, ?, ?)";
+      
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $room_id
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $current_time
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $date_inserted
+            )
+        );
+
+        $this->insertDB($query, $params);
+    }
+
+
+    function updateScannedUid($uid,$room_id,$current_time,$date_inserted)
+    {
+        $query = "UPDATE tbl_school_monitoring_attendance SET timeout = ? WHERE uid = ? AND room = ? AND date_inserted = ?";
+        $params = array( 
+            array(
+                "param_type" => "s",
+                "param_value" => $current_time
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $room_id
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $date_inserted
+            )
+        );
+        $this->updateDB($query, $params);
+    }
+
+    function myAttendanceMonitoringToday($uid)
+    {
+
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ? AND TSMA.date_inserted = ?"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+             "param_type" => "s",
+             "param_value" => date('Y-m-d')
+           )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myAttendanceMonitoringTodayTeacher($sid)
+    {
+
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
+        WHERE TSSR.current_section = ? AND TSMA.date_inserted = ?"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            ),
+            array(
+             "param_type" => "s",
+             "param_value" => date('Y-m-d')
+           )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myAttendanceMonitoringTodayGroup($uid)
+    {
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ? AND TSMA.date_inserted = ? GROUP BY TSMA.date_inserted"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+             "param_type" => "s",
+             "param_value" => date('Y-m-d')
+           )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+
+    function myAttendanceMonitoringOverallGroup($uid)
+    {
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ? GROUP BY TSMA.date_inserted"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myAttendanceMonitoringOverall($uid)
+    {
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ?"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myAttendanceMonitoringOverallTeacher($sid)
+    {
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
+        WHERE TSSR.current_section = ?"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function allSectionForSy()
+    {
+        $query = "SELECT * FROM tbl_user_school_year TUSY LEFT JOIN tbl_school_year_details_section TSYDS ON TUSY.sycode = TSYDS.sycode
+        LEFT JOIN tbl_school_year_details_grade TSYDG ON TSYDS.gid = TSYDG.gid
+        WHERE TUSY.status = 'ACTIVATED'";
+        $allSection = $this->getDBResult($query);
+        return $allSection;
+
+    }
+
+
+    function checkIfExistingAlreadyTeacher($uid)
+    {
+        $query = "SELECT * FROM teacher_assigned_section TAS WHERE TAS.uid = ?"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function addSectionForTeacher($uid, $sycode, $sid)
+    {
+        $query = "INSERT INTO teacher_assigned_section (uid, sid, sycode) VALUES (?, ?, ?)";
+      
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $sycode
+            )
+        );
+
+        $this->insertDB($query, $params);
+    }
+
+    function updateSectionForTeacher($uid, $sycode, $sid)
+    {
+        $query = "UPDATE teacher_assigned_section SET sid = ?, sycode = ? WHERE uid = ?";
+        $params = array( 
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $sycode
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            )
+        );
+        $this->updateDB($query, $params);
+    }
+
+    function insertSectionForTeacherHistory($uid, $prevSycode, $prevSid)
+    {
+        $query = "INSERT INTO tbl_assigned_teacher_section_history (uid, sid, sycode) VALUES (?, ?, ?)";
+      
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $prevSid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $prevSycode
+            )
+        );
+
+        $this->insertDB($query, $params);
+    }
+
+
+    function myAttendanceMonitoringOverallNoSpecific()
+    {
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR
+        ON TSMA.uid = TSSR.uid LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section 
+        = TSYDS.sid"; 
+
+        $allMonitoring = $this->getDBResult($query);
+        return $allMonitoring;
+    }
+
+    function myAttendanceMonitoringTodayOverall()
+    {
+
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR
+        ON TSMA.uid = TSSR.uid LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section 
+        = TSYDS.sid WHERE TSMA.date_inserted = NOW()"; 
+
+        $allMonitoring = $this->getDBResult($query);
+        return $allMonitoring;
+
+    }
+
+    function checkTotalStudentForTheActivatedSY()
+    {
+        $query = "SELECT TUSY.year_from,TUSY.year_to,TUSY.sycode,COUNT(*) as total FROM tbl_school_student_record TSSR LEFT JOIN tbl_user_school_year TUSY ON TSSR.sycode = TUSY.sycode WHERE TUSY.status = 'ACTIVATED'";
+        $allMonitoring = $this->getDBResult($query);
+        return $allMonitoring;
+    }
+
+    function checkTotalTeacherForTheActivatedSY()
+    {
+        $query = "SELECT TUSY.year_from,TUSY.year_to,TUSY.sycode,COUNT(*) as total  FROM teacher_assigned_section TAS LEFT JOIN  tbl_school_teacher_record TSTR ON TAS.uid = TSTR.uid LEFT JOIN tbl_user_school_year TUSY ON TAS.sycode = TUSY.sycode WHERE TUSY.status = 'ACTIVATED'";
+        $allMonitoring = $this->getDBResult($query);
+        return $allMonitoring;
+    }
+
+    function myTeacherInformation($uid)
+    {
+        $query = "SELECT * FROM tbl_user_information TUI LEFT JOIN tbl_school_teacher_record TSTR ON TUI.uid = TSTR.uid LEFT JOIN teacher_assigned_section TAS ON TAS.uid = TSTR.uid 
+        LEFT JOIN tbl_school_year_details_section TSYDS ON TAS.sid = TSYDS.sid LEFT JOIN tbl_school_year_details_grade TSYDG ON TSYDS.gid = TSYDG.gid WHERE TUI.uid = ?"; 
+
+        $params = array(
+                
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            )
+        );
+
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myTeacherStudent($sid)
+    {
+        $query = "SELECT * FROM tbl_school_student_record TSSR LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSYDS.sid = TSSR.current_section 
+        WHERE TSSR.current_section = ?"; 
+
+        $params = array(
+                        
+            array(
+                "param_type" => "s",
+                "param_value" => $sid
+            )
+        );
+
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+
+    }
+
+
+    
+
+
+
+
 
 
 

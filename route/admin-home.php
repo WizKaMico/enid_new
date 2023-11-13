@@ -6,7 +6,9 @@
                             <i class="fa fa-user fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total no. of Students</p>
-                                <!-- <h6 class="mb-0">$1234</h6> -->
+                                <h6 class="mb-0"><?php echo $studStat[0]['total']; ?></h6>
+                                (<?php echo $studStat[0]['year_from']; ?> - <?php echo $studStat[0]['year_to']; ?> : SY:<?php echo $studStat[0]['sycode']; ?>)
+                                
                             </div>
                         </div>
                     </div>
@@ -15,7 +17,9 @@
                             <i class="fa fa-chalkboard-teacher fa-3x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Total no. of Teacher</p>
-                                <!-- <h6 class="mb-0">$1234</h6> -->
+                                <h6 class="mb-0"><?php echo $teacherStat[0]['total']; ?></h6>
+                                (<?php echo $teacherStat[0]['year_from']; ?> - <?php echo $teacherStat[0]['year_to']; ?> : SY:<?php echo $teacherStat[0]['sycode']; ?>)
+                               
                             </div>
                         </div>
                     </div>

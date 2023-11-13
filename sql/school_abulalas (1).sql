@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2023 at 09:22 PM
+-- Generation Time: Nov 13, 2023 at 07:03 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `school_abulalas`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_assigned_teacher_section_history`
+--
+
+CREATE TABLE `tbl_assigned_teacher_section_history` (
+  `haid` int(11) NOT NULL,
+  `uid` varchar(255) NOT NULL,
+  `sid` int(50) NOT NULL,
+  `sycode` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -138,6 +151,31 @@ INSERT INTO `tbl_school_lost` (`fid`, `item`, `foundby`, `foundin`, `image_path`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_school_monitoring_attendance`
+--
+
+CREATE TABLE `tbl_school_monitoring_attendance` (
+  `scid` int(11) NOT NULL,
+  `room` int(50) NOT NULL,
+  `uid` varchar(255) NOT NULL,
+  `timein` varchar(100) NOT NULL,
+  `timeout` varchar(100) NOT NULL,
+  `date_inserted` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_school_monitoring_attendance`
+--
+
+INSERT INTO `tbl_school_monitoring_attendance` (`scid`, `room`, `uid`, `timein`, `timeout`, `date_inserted`) VALUES
+(1, 1, '202311137094', '10:06 PM', '10:08 PM', '2023-11-13'),
+(2, 1, '202311137094', '10:06 PM', '10:08 PM', '2023-11-13'),
+(3, 2, '202311137094', '10:07 PM', '10:12 PM', '2023-11-13'),
+(4, 1, '202311136704', '2:00 AM', '2:00 AM', '2023-11-14');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_school_request_type`
 --
 
@@ -206,7 +244,9 @@ CREATE TABLE `tbl_school_student_request` (
 
 INSERT INTO `tbl_school_student_request` (`reqid`, `sycode`, `uid`, `request_type`, `note`, `status`, `date_created`) VALUES
 (1, 7978, '202311137094', 1, 'THIS IS A REJECT', 'REJECTED', '2023-11-13'),
-(2, 7978, '202311137094', 1, 'ALSO REJECTING THIS', 'REJECTED', '2023-11-13');
+(2, 7978, '202311137094', 1, 'ALSO REJECTING THIS', 'REJECTED', '2023-11-13'),
+(3, 7978, '202311137094', 1, 'TEST', 'NEW', '2023-11-13'),
+(4, 7978, '202311136704', 1, 'I want my report grade now', 'NEW', '2023-11-14');
 
 -- --------------------------------------------------------
 
@@ -406,11 +446,11 @@ CREATE TABLE `tbl_user_information` (
 
 INSERT INTO `tbl_user_information` (`user_id`, `uid`, `email`, `password`, `designation`, `code`, `status`) VALUES
 (1, '202311106896', 'revcoreitsolution@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 1, 6899, 'VERIFIED'),
-(20, '202311137094', 'tricore012@gmail.com', '315cbf9a36a74db5b5cbe48074f23a72', 3, 7665, 'UNVERIFIED'),
+(20, '202311137094', 'tricore012@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 3, 7665, 'VERIFIED'),
 (21, '202311139631', 'tricore012@gmail.com', '06d126608ea107f64adc31bc93733a37', 3, 9822, 'UNVERIFIED'),
-(22, '202311136704', 'tricore012@gmail.com', 'b7ee7429dee6b347930336251acd2aac', 3, 9247, 'UNVERIFIED'),
+(22, '202311136704', 'tricore012@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', 3, 9247, 'VERIFIED'),
 (23, '202311137343', 'tricore012@gmail.com', '5e8ced789acbb4eee2a95f1485b17e40', 3, 8602, 'UNVERIFIED'),
-(24, '65369999', 'tricore012@gmail.com', '97cbf2332b14bddab0159f04af75f104', 2, 9996, 'UNVERIFIED');
+(24, '65369999', 'tricore012@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 2, 9996, 'VERIFIED');
 
 -- --------------------------------------------------------
 
@@ -473,7 +513,23 @@ INSERT INTO `tbl_user_security` (`id`, `uid`, `email`, `code`, `status`, `date_c
 (3, '202311106896', 'revcoreitsolution@gmail.com', 6726, 'USED', '2023-11-11'),
 (4, '202311106896', 'revcoreitsolution@gmail.com', 8274, 'USED', '2023-11-11'),
 (5, '202311106896', 'revcoreitsolution@gmail.com', 7674, 'UNUSED', '2023-11-13'),
-(6, '202311106896', 'revcoreitsolution@gmail.com', 8783, 'USED', '2023-11-13');
+(6, '202311106896', 'revcoreitsolution@gmail.com', 8783, 'USED', '2023-11-13'),
+(7, '202311137094', 'tricore012@gmail.com', 9658, 'UNUSED', '2023-11-13'),
+(8, '202311137094', 'tricore012@gmail.com', 8233, 'UNUSED', '2023-11-13'),
+(9, '202311137094', 'tricore012@gmail.com', 8992, 'USED', '2023-11-13'),
+(10, '202311106896', 'revcoreitsolution@gmail.com', 9906, 'USED', '2023-11-13'),
+(11, '202311137094', 'tricore012@gmail.com', 9112, 'USED', '2023-11-13'),
+(12, '202311137094', 'tricore012@gmail.com', 9192, 'UNUSED', '2023-11-13'),
+(13, '202311137094', 'tricore012@gmail.com', 8424, 'USED', '2023-11-13'),
+(14, '202311106896', 'revcoreitsolution@gmail.com', 8478, 'USED', '2023-11-13'),
+(15, '202311137094', 'tricore012@gmail.com', 8161, 'USED', '2023-11-13'),
+(16, '202311106896', 'revcoreitsolution@gmail.com', 7286, 'USED', '2023-11-13'),
+(17, '202311106896', 'revcoreitsolution@gmail.com', 9970, 'USED', '2023-11-14'),
+(18, '65369999', 'tricore012@gmail.com', 9736, 'UNUSED', '2023-11-14'),
+(19, '202311106896', 'revcoreitsolution@gmail.com', 9121, 'USED', '2023-11-14'),
+(20, '202311136704', 'tricore012@gmail.com', 7953, 'UNUSED', '2023-11-14'),
+(21, '202311136704', 'tricore012@gmail.com', 8874, 'UNUSED', '2023-11-14'),
+(22, '65369999', 'tricore012@gmail.com', 8160, 'USED', '2023-11-14');
 
 -- --------------------------------------------------------
 
@@ -503,9 +559,35 @@ INSERT INTO `tbl_user_student_history` (`hid`, `sycode`, `uid`, `gid`, `section`
 (5, 7978, '202311136704', 7, 7, 88, '2023-11-13'),
 (6, 7978, '202311137343', 8, 10, 88, '2023-11-13');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `teacher_assigned_section`
+--
+
+CREATE TABLE `teacher_assigned_section` (
+  `aid` int(11) NOT NULL,
+  `uid` varchar(255) NOT NULL,
+  `sid` int(50) NOT NULL,
+  `sycode` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `teacher_assigned_section`
+--
+
+INSERT INTO `teacher_assigned_section` (`aid`, `uid`, `sid`, `sycode`) VALUES
+(1, '65369999', 7, 7978);
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_assigned_teacher_section_history`
+--
+ALTER TABLE `tbl_assigned_teacher_section_history`
+  ADD PRIMARY KEY (`haid`);
 
 --
 -- Indexes for table `tbl_school_announcement`
@@ -532,6 +614,12 @@ ALTER TABLE `tbl_school_enrollee_trans`
 --
 ALTER TABLE `tbl_school_lost`
   ADD PRIMARY KEY (`fid`);
+
+--
+-- Indexes for table `tbl_school_monitoring_attendance`
+--
+ALTER TABLE `tbl_school_monitoring_attendance`
+  ADD PRIMARY KEY (`scid`);
 
 --
 -- Indexes for table `tbl_school_request_type`
@@ -620,8 +708,20 @@ ALTER TABLE `tbl_user_student_history`
   ADD PRIMARY KEY (`hid`);
 
 --
+-- Indexes for table `teacher_assigned_section`
+--
+ALTER TABLE `teacher_assigned_section`
+  ADD PRIMARY KEY (`aid`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `tbl_assigned_teacher_section_history`
+--
+ALTER TABLE `tbl_assigned_teacher_section_history`
+  MODIFY `haid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_school_announcement`
@@ -648,6 +748,12 @@ ALTER TABLE `tbl_school_lost`
   MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `tbl_school_monitoring_attendance`
+--
+ALTER TABLE `tbl_school_monitoring_attendance`
+  MODIFY `scid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `tbl_school_request_type`
 --
 ALTER TABLE `tbl_school_request_type`
@@ -663,7 +769,7 @@ ALTER TABLE `tbl_school_student_record`
 -- AUTO_INCREMENT for table `tbl_school_student_request`
 --
 ALTER TABLE `tbl_school_student_request`
-  MODIFY `reqid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `reqid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_school_student_request_history`
@@ -723,13 +829,19 @@ ALTER TABLE `tbl_user_school_year`
 -- AUTO_INCREMENT for table `tbl_user_security`
 --
 ALTER TABLE `tbl_user_security`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `tbl_user_student_history`
 --
 ALTER TABLE `tbl_user_student_history`
   MODIFY `hid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `teacher_assigned_section`
+--
+ALTER TABLE `teacher_assigned_section`
+  MODIFY `aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

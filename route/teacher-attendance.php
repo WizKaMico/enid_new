@@ -1,8 +1,8 @@
-            <div class="container-fluid pt-4 px-4">
+<div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                    <div class="col-sm-12 col-xl-12">
                         <div class="bg-light rounded h-100 p-4">
-                            <h6 class="mb-4">MY MONITORING</h6>
+                            <h6 class="mb-4">TEACHER ATTENDANCE</h6>
                                     <hr />
                             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -24,7 +24,7 @@
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-today" role="tabpanel" aria-labelledby="pills-today-tab">
                                     NOTE : This is your daily attendance
-                                     <table id="myMonitoringAttendanceToday" class="table table-striped" style="text-align:center;">
+                                     <table id="myMonitoringAttendanceTodayTeacher" class="table table-striped" style="text-align:center;">
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
@@ -37,8 +37,8 @@
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $uid = $userSession[0]['uid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringTodayOverall();
+                                                $sid = $tinfo[0]['sid'];
+                                                $attendanceToday = $portCont->myAttendanceMonitoringTodayTeacher($sid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
@@ -56,13 +56,10 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-week" role="tabpanel" aria-labelledby="pills-week-tab">
                                     NOTE : This is your weekly attendance
-                                    <table id="myMonitoringAttendanceWeekly" class="table table-striped" style="text-align:center;">
+                                    <table id="myMonitoringAttendanceWeeklyTeacher" class="table table-striped" style="text-align:center;">
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
-                                                        <th scope="col">NAME</th>
-                                                        <th scope="col">SECTION</th>
-                                                        <th scope="col">GRADE</th>
                                                         <th scope="col">ROOM</th>
                                                         <th scope="col">BUILDING</th>
                                                         <th scope="col">TIME-IN</th>
@@ -72,15 +69,13 @@
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecific();
+                                                $sid = $tinfo[0]['sid'];
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallTeacher($sid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $attendanceToday[$key]['scid']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['fname']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['section_name']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['grade']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['room']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['building']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['timein']; ?></td>
@@ -93,13 +88,10 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-monthly" role="tabpanel" aria-labelledby="pills-monthly-tab">
                                     NOTE : This is your monthly attendance
-                                    <table id="myMonitoringAttendanceMonthly" class="table table-striped" style="text-align:center;">
+                                    <table id="myMonitoringAttendanceMonthlyTeacher" class="table table-striped" style="text-align:center;">
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
-                                                        <th scope="col">NAME</th>
-                                                        <th scope="col">SECTION</th>
-                                                        <th scope="col">GRADE</th>
                                                         <th scope="col">ROOM</th>
                                                         <th scope="col">BUILDING</th>
                                                         <th scope="col">TIME-IN</th>
@@ -109,15 +101,13 @@
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecific();
+                                                $sid = $tinfo[0]['sid'];
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallTeacher($sid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $attendanceToday[$key]['scid']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['fname']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['section_name']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['grade']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['room']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['building']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['timein']; ?></td>

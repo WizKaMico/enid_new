@@ -253,6 +253,7 @@
                                                                 <th scope="col">#</th>
                                                                 <th scope="col">ROOM</th>
                                                                 <th scope="col">BUILDING</th>
+                                                                <th scope="col">SCAN SITE</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -265,6 +266,10 @@
                                                                 <th scope="row"><?php echo $schoolYearRoomDetails[$key]['id']; ?></th>
                                                                 <td><?php echo $schoolYearRoomDetails[$key]['room']; ?></td>
                                                                 <td><?php echo $schoolYearRoomDetails[$key]['building']; ?></td>
+                                                                <td>
+                                                                <!-- http://localhost/scan.php?room_id=1 -->
+                                                                   <a class="btn btn" href="scan.php?room_id=<?php echo $schoolYearRoomDetails[$key]['id']; ?>" target="_blank">OPEN</a>
+                                                                </td>
                                                             </tr>
                                                             <?php } } ?>
                                                         </tbody>
@@ -278,3 +283,4 @@
                     </div>
                 </div>
             </div>
+

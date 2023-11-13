@@ -1,4 +1,4 @@
-            <div class="container-fluid pt-4 px-4">
+        <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
                    <div class="col-sm-12 col-xl-12">
                         <div class="bg-light rounded h-100 p-4">
@@ -38,7 +38,7 @@
                                                  <tbody>
                                                 <?php 
                                                 $uid = $userSession[0]['uid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringTodayOverall();
+                                                $attendanceToday = $portCont->myAttendanceMonitoringToday($uid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
@@ -60,9 +60,6 @@
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
-                                                        <th scope="col">NAME</th>
-                                                        <th scope="col">SECTION</th>
-                                                        <th scope="col">GRADE</th>
                                                         <th scope="col">ROOM</th>
                                                         <th scope="col">BUILDING</th>
                                                         <th scope="col">TIME-IN</th>
@@ -72,15 +69,13 @@
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecific();
+                                                $uid = $userSession[0]['uid'];
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverall($uid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $attendanceToday[$key]['scid']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['fname']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['section_name']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['grade']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['room']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['building']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['timein']; ?></td>
@@ -97,9 +92,6 @@
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
-                                                        <th scope="col">NAME</th>
-                                                        <th scope="col">SECTION</th>
-                                                        <th scope="col">GRADE</th>
                                                         <th scope="col">ROOM</th>
                                                         <th scope="col">BUILDING</th>
                                                         <th scope="col">TIME-IN</th>
@@ -109,15 +101,13 @@
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecific();
+                                                $uid = $userSession[0]['uid'];
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverall($uid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $attendanceToday[$key]['scid']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['fname']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['section_name']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['grade']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['room']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['building']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['timein']; ?></td>

@@ -20,10 +20,12 @@
                                                 <?php 
                                                 $studentInfo = $portCont->allAccountStudent();
                                                 if (!empty($studentInfo)) {
-                                                    foreach ($studentInfo as $key => $value) { 
+                                                    foreach ($studentInfo as $key => $value) {
+                                                        $uid = $studentInfo[$key]['uid'];
+                                                        $qrtobegenerated = 'https://chart.googleapis.com/chart?chs=50x50&cht=qr&chl=' . urlencode($uid); 
                                                 ?>
                                                 <tr>
-                                                    <td><?php echo $studentInfo[$key]['uid']; ?></td>
+                                                    <td><img src='<?php echo $qrtobegenerated; ?>' alt='QR Code'></td>
                                                     <td><?php echo $studentInfo[$key]['uid']; ?></td>
                                                     <td><?php echo $studentInfo[$key]['email']; ?></td>
                                                     <td><?php echo $studentInfo[$key]['fname']; ?></td>

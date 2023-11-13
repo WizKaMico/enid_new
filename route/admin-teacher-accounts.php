@@ -38,7 +38,22 @@
                     <div class="col-sm-12 col-xl-4">
                         <div class="bg-light rounded h-100 p-4">
                             <h6 class="mb-4">CREATE TEACHER ACCOUNTS</h6>
-                            <form action="home.php?view=teacher-accounts&action=createAccountTeacher" method="POST"> 
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="pills-account-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-account" type="button" role="tab" aria-controls="pills-account"
+                                        aria-selected="true">CREATE ACCOUNT</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-section-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-section" type="button" role="tab"
+                                        aria-controls="pills-section" aria-selected="false">ASSIGN SECTION</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab">
+                                    NOTE : Here you can create a teacher account
+                                    <form action="home.php?view=teacher-accounts&action=createAccountTeacher" method="POST"> 
                                         <div class="form-floating mb-3">
                                             <select class="form-control" name="sycode" id="floatingInput">
                                                     <?php 
@@ -102,7 +117,66 @@
                                     
 
                                         <button type="submit" name="add" style="width:100%;" class="btn btn-primary">ENROLL</button>
-                                   </form>        
+                                   </form>
+                                </div>
+                                <div class="tab-pane fade" id="pills-section" role="tabpanel" aria-labelledby="pills-section-tab">
+                                    NOTE : Assign a teacher a section
+                                    <form action="home.php?view=teacher-accounts&action=assignTeachSection" method="POST"> 
+                                       <div class="form-floating mb-3">
+                                            <select class="form-control" name="sycode" id="floatingInput">
+                                                    <?php 
+                                                        $schoolYearActivated = $portCont->getYearActivated();
+                                                        if (!empty($schoolYearActivated)) {
+                                                            foreach ($schoolYearActivated as $key => $value) {     
+                                                    ?>  
+                                                     <option value="<?php echo $schoolYearActivated[$key]['sycode']; ?>"><?php echo $schoolYearActivated[$key]['year_from']; ?> - <?php echo $schoolYearActivated[$key]['year_to']; ?> (<?php echo $schoolYearActivated[$key]['sycode']; ?>)</option>       
+                                                    <?php } } ?>
+                                            </select>
+                                            <label for="floatingInput">SYCODE</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" name="uid" id="floatingInput">
+                                                    <?php 
+                                                        $schoolTeacher = $portCont->allAccountTeacher();
+                                                        if (!empty($schoolTeacher)) {
+                                                            foreach ($schoolTeacher as $key => $value) {  
+                                                            $uid = $schoolTeacher[$key]['uid'];
+                                                            $checkExst = $portCont->checkIfExistingAlreadyTeacher($uid);  
+                                                            if(!empty($checkExst)) { 
+                                                    ?>  
+                                                       
+                                                     <?php } else { ?>
+                                                        <option value="<?php echo $schoolTeacher[$key]['uid']; ?>">(<?php echo $schoolTeacher[$key]['uid']; ?>) <?php echo $schoolTeacher[$key]['lname']; ?>, <?php echo $schoolTeacher[$key]['fname']; ?></option>
+                                                     <?php } ?>
+                                                     <?php } } ?>
+                                            </select>
+                                            <label for="floatingInput">TEACHER</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" name="sid" id="floatingInput">
+                                                    <?php 
+                                                        $schoolSection = $portCont->allSectionForSy();
+                                                        if (!empty($schoolSection)) {
+                                                            foreach ($schoolSection as $key => $value) {     
+                                                    ?>  
+                                                     <option value="<?php echo $schoolSection[$key]['sid']; ?>"><?php echo $schoolSection[$key]['section_name']; ?> (<?php echo $schoolSection[$key]['grade']; ?>)</option>       
+                                                    <?php } } ?>
+                                            </select>
+                                            <label for="floatingInput">SECTION & GRADE</label>
+                                        </div>
+                                        <button type="submit" name="add" style="width:100%;" class="btn btn-primary">ASSIGN SECTION</button>
+                                   </form>
+
+                                        
+
+
+                                        
+                                </div>
+
+                            </div>
+                                    
                         </div>
                     </div>
                 </div>
