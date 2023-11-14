@@ -30,7 +30,9 @@
     
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="datatable/datatable/dataTable.bootstrap.min.css">      
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css'>
+     <link rel='stylesheet' href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css'><link rel="stylesheet" href="./style.css">
+    
     <style>
 		.height10{
 			height:10px;
@@ -247,8 +249,9 @@
             <?php } else if($_GET['view'] == 'request') { ?>
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-            <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-            <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
             <script>
                 $(document).ready(function(){
                     // Function to initialize DataTable and hide alert
@@ -277,8 +280,9 @@
             <script src="js/ph-address-selector1.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-            <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-            <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
             <script>
                 $(document).ready(function(){
                     // Function to initialize DataTable and hide alert
@@ -301,8 +305,9 @@
                 
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-            <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-            <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
             <script>
                 $(document).ready(function(){
                     // Function to initialize DataTable and hide alert
@@ -323,8 +328,9 @@
             <script src="js/ph-address-selector.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-            <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-            <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
             <script>
                 $(document).ready(function(){
                     // Function to initialize DataTable and hide alert
@@ -342,15 +348,38 @@
                 });
             </script>
             <?php } else if($_GET['view'] == 'monitoring') { ?>
-           
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
+            <script>
+                $(document).ready(function(){
+                    // Function to initialize DataTable and hide alert
+                    function initializeDataTable(tableId) {
+                        $(tableId).DataTable();
+
+                        // Hide alert on close button click
+                        $(document).on('click', '.close', function(){
+                            $('.alert').hide();
+                        });
+                    }
+
+                    // Initialize DataTables for different tables
+                    initializeDataTable('#myMonitoringAttendanceToday');
+                    initializeDataTable('#myMonitoringAttendanceWeekly');
+                    initializeDataTable('#myMonitoringAttendanceMonthly');
+                });
+            </script>
             <?php } else if($_GET['view'] == 'schoolyear') { ?>
             <script src="js/admin-schoolyear-aggrid.js"></script>
 
             <?php } else if($_GET['view'] == 'school_year_detail') { ?> 
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-            <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-            <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
             <script>
                 $(document).ready(function(){
                     // Function to initialize DataTable and hide alert
@@ -396,8 +425,9 @@
                 
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-            <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-            <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
             <script>
                 $(document).ready(function(){
                     // Function to initialize DataTable and hide alert
@@ -419,8 +449,8 @@
                 
                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-                <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-                <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+                <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+                <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
                 <script>
                     $(document).ready(function(){
                         // Function to initialize DataTable and hide alert
@@ -469,8 +499,9 @@
 
                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-                <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-                <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+                <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+                <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+                <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
                 <script>
                     $(document).ready(function(){
                         // Function to initialize DataTable and hide alert
@@ -492,8 +523,9 @@
 
                 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
-                <script src="datatable/datatable/jquery.dataTables.min.js"></script>
-                <script src="datatable/datatable/dataTable.bootstrap.min.js"></script>
+                <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+                <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+                <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
                 <script>
                     $(document).ready(function(){
                         // Function to initialize DataTable and hide alert
@@ -515,7 +547,27 @@
 
 
             <?php } else if($_GET['view'] == 'lost') { ?>
-           
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
+            <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
+            <script>
+                $(document).ready(function(){
+                    // Function to initialize DataTable and hide alert
+                    function initializeDataTable(tableId) {
+                        $(tableId).DataTable();
+
+                        // Hide alert on close button click
+                        $(document).on('click', '.close', function(){
+                            $('.alert').hide();
+                        });
+                    }
+
+                    // Initialize DataTables for different tables
+                    initializeDataTable('#myLost');
+                });
+            </script>
             <?php }  else { ?>
             
             <?php }  ?>

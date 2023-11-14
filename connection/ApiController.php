@@ -1773,6 +1773,43 @@ class portalController extends DBController
 
     }
 
+    function checkForgotten($uid,$role)
+    {
+        $query = "SELECT * FROM tbl_user_information TUI LEFT JOIN tbl_user_designation TUD ON TUI.designation = TUD.did WHERE TUI.uid = ? AND TUD.role = ?"; 
+
+        $params = array(
+                        
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ), array(
+                "param_type" => "s",
+                "param_value" => $role
+            )
+        );
+
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+
+    }
+
+
+    function updateForgotten($uid,$hash)
+    {
+        $query = "UPDATE tbl_user_information SET password = ? WHERE uid = ?";
+        $params = array( 
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $hash
+            )
+        );
+        $this->updateDB($query, $params);
+    }
+
 
     
 

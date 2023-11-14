@@ -5,7 +5,7 @@
                         <div class="align-items-center justify-content-between mb-3">
                               <center><img src="logo/main.png"/></center>
                         </div>
-                    <form method="POST" action="index.php?action=login">
+                    <form method="POST" action="index.php?action=forgot">
                         <div class="form-floating mb-3">
                             <select class="form-control" name="role" id="accessRole" onchange="updateLabel()">
                                <?php  
@@ -23,18 +23,10 @@
                             <input type="text" name="uid" class="form-control" id="uidInput" placeholder="UID" required="">
                             <label for="uidInput">UID (ADMIN)</label>
                         </div>
-                        <div class="form-floating mb-4">
-                            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required="">
-                            <label for="floatingPassword">Password</label>
-                        </div>
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <div class="form-check">
-                                <input type="checkbox" name="remember_me" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Remember Me</label>
-                            </div>
-                            <a href="index.php?view=forgot">Forgot Password</a>
+                            <a href="index.php?view=login">Return to login</a>
                         </div>
-                        <button type="submit" name="login" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                        <button type="submit" name="forgot" class="btn btn-primary py-3 w-100 mb-4">validate</button>
                     </form>
                     </div>
                 </div>

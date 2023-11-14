@@ -187,6 +187,43 @@ if (! empty($_GET["action"])) {
             break;
 
 
+            case "forgot":
+                if(isset($_POST['forgot'])){
+                    $role = $_POST['role']; 
+                    $uid = $_POST['uid'];
+                    if(!empty($role) && !empty($uid))
+                    {
+                        $checkExistence = $portCont->checkForgotten($uid,$role);
+                        if(!empty($checkExistence)){
+                        header('Location: ?view=newpassword&uid='.$uid);    
+                        }else{
+                        header('Location: ?view=forgot&message=error');    
+                        }
+                    }
+                    else{
+                        header('Location: ?view=forgot&message=error'); 
+                    }
+                }
+                break;
+
+            case "newpasss": 
+                if(isset($_POST['newpasss']))
+                {
+                    $uid = $_POST['uid']; 
+                    $newpassword = $_POST['newpassword']; 
+
+                    if(!empty($_POST['uid']) && !empty($_POST['newpassword']))
+                    {
+                        $hash = md5($newpassword);
+                        $portCont->updateForgotten($uid,$hash);
+                        header('Location: ?view=login'); 
+                    }else{
+                        header('Location: ?view=newpassword&message=error&uid='.$uid); 
+                    }
+
+                }
+
+
     }
 }
 

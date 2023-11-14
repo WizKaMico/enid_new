@@ -21,7 +21,7 @@
                                     <hr />
                                     
                                        <div class="row">
-                                        <table id="myAnnouncementTable" class="table table-striped" style="text-align:center;">
+                                        <table id="myLost" class="table table-striped" style="text-align:center;">
                                             <thead>
                                                  <tr>
                                                     <th scope="col">ITEM</th>

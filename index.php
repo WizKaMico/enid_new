@@ -94,6 +94,10 @@
        <?php if(!empty($_GET['view'])) {  ?>
        <?php if($_GET['view'] == 'login') { ?>
        <?php include('login/login.php'); ?>
+       <?php  } else if($_GET['view'] == 'forgot') { ?>
+       <?php include('login/forgot.php'); ?>
+       <?php  } else if($_GET['view'] == 'newpassword') { ?>
+       <?php include('login/newpassword.php'); ?>
        <?php  } else { ?>
        <?php include('login/login.php'); ?>
        <?php  } ?>
