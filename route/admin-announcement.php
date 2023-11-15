@@ -28,11 +28,49 @@
                                                     <th scope="col">START DATE</th>
                                                     <th scope="col">END DATE</th>
                                                     <th scope="col">IMAGE</th>
+                                                    <th scope="col">ACTION</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php 
                                                     $schoolAnnouncement = $portCont->allAnnoucement();
+                                                        if (!empty($schoolAnnouncement)) {
+                                                            foreach ($schoolAnnouncement as $key => $value) {   
+                                                            ?>
+                                                            <tr>
+                                                                <th scope="row"><?php echo $schoolAnnouncement[$key]['title']; ?></th>
+                                                                <td><?php echo $schoolAnnouncement[$key]['description']; ?></td>
+                                                                <td><?php echo $schoolAnnouncement[$key]['start']; ?></td>
+                                                                <td><?php echo $schoolAnnouncement[$key]['end']; ?></td>
+                                                                <td><img src="<?php echo $schoolAnnouncement[$key]['image_path']; ?>" style="width:20%;"></td>
+                                                                <td>
+                                                                <a href='#editInfoAnnouncementModal_<?php echo $schoolAnnouncement[$key]['id']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editInfoAnnouncementModal_<?php echo  $schoolAnnouncement[$key]['id']; ?>'>Edit</a>
+                                                                </td>
+
+                                                            </tr>
+                                                            <?php include('modal/edit_announcement_modal.php'); ?>  
+                                                            <?php } } ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-archive" role="tabpanel" aria-labelledby="pills-archive-tab">
+                                    NOTE : This are all of the archive announcement
+                                    <hr />
+                                    <div class="row">
+                                        <table id="myInactiveAnnouncementTable" class="table table-striped" style="text-align:center;">
+                                            <thead>
+                                                 <tr>
+                                                    <th scope="col">TITLE</th>
+                                                    <th scope="col">DETAILS</th>
+                                                    <th scope="col">START DATE</th>
+                                                    <th scope="col">END DATE</th>
+                                                    <th scope="col">IMAGE</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
+                                                    $schoolAnnouncement = $portCont->allInActiveAnnoucement();
                                                         if (!empty($schoolAnnouncement)) {
                                                             foreach ($schoolAnnouncement as $key => $value) {   
                                                             ?>
@@ -49,9 +87,6 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                </div>
-                                <div class="tab-pane fade" id="pills-archive" role="tabpanel" aria-labelledby="pills-archive-tab">
-                                    NOTE : This are all of the archive announcement
                                 </div>
 
                             </div>
@@ -124,7 +159,6 @@
                                             <p><?php echo $allAnnouncement[$key]['description']; ?></p>
                                         </div>
                                         <?php } } ?>
-                                        
                                     </div>
                                 </div>
 

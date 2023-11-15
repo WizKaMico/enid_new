@@ -108,12 +108,56 @@ class portalController extends DBController
        return $userCredentials;
     }
 
+    function checkTheActiveSchoolYear()
+    {
+        $query = "SELECT * FROM `tbl_user_school_year` WHERE status = 'ACTIVATED'";
+       $userCredentials = $this->getDBResult($query);
+       return $userCredentials;
+    }
+
 
     function getStudentDetails($uid)
     {
         $query = "SELECT * FROM tbl_user_information TUI LEFT JOIN tbl_user_designation TUD ON TUI.designation = TUD.did LEFT JOIN tbl_school_student_record TSSR ON TUI.uid = TSSR.uid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid 
         LEFT JOIN  tbl_school_year_details_grade TSYDG ON TSYDG.gid = TSSR.current_level
         WHERE TUI.uid = ?";
+
+        $params = array(
+           
+           array(
+               "param_type" => "s",
+               "param_value" => $uid
+           )
+       );
+       
+       $userCredentials = $this->getDBResult($query, $params);
+       return $userCredentials;
+    }
+
+    function studentEnrollmentConsent($uid, $sycode, $confirm)
+    {
+        $query = "INSERT INTO tbl_student_confirmation_for_enrollment (uid,sycode,confirm) VALUES (?,?,?)"; 
+
+        $params = array(    
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $sycode
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $confirm
+            )
+        );
+        $this->insertDB($query, $params);
+    }
+
+    function studentEnrollmentConsentChecking($uid)
+    {
+        $query = "SELECT * FROM tbl_student_confirmation_for_enrollment TSCFE WHERE TSCFE.uid = ?";
 
         $params = array(
            
@@ -251,6 +295,13 @@ class portalController extends DBController
        return $userSchoolYearGrade;
     }
 
+    function getSchoolYearDetailsGradeSpecificEdit()
+    {
+        $query = "SELECT * FROM tbl_school_year_details_grade TSYDG WHERE TSYDG.sycode IN (SELECT TUSY.sycode FROM tbl_user_school_year TUSY WHERE TUSY.status = 'ACTIVATED')";
+        $checkSpecificResult = $this->getDBResult($query);
+        return $checkSpecificResult;
+    }
+
     function getSchoolYearDetailsGradeFresh($sycode)
     {
         $query = "SELECT * FROM tbl_school_year_details_grade TSYDG WHERE TSYDG.sycode = ?";
@@ -344,7 +395,7 @@ class portalController extends DBController
 
     function getSchoolYearDetailsSectionSpecialBracketing($sycode,$average,$rgid)
     {
-        $query = "SELECT * FROM tbl_school_year_details_section TSYDC WHERE TSYDC.sycode = ? AND TSYDC.min >= ? AND ? <= TSYDC.max AND TSYDC.gid = ?";
+        $query = "SELECT * FROM tbl_school_year_details_section TSYDC WHERE TSYDC.sycode = ? AND TSYDC.min >= ? AND ? < TSYDC.max AND TSYDC.gid = ?";
 
         $params = array( 
           array(
@@ -381,6 +432,13 @@ class portalController extends DBController
        );
        
        $userSchoolYearGrade = $this->getDBResult($query, $params);
+       return $userSchoolYearGrade;
+    }
+
+    function getSchoolYearDetailsSectionDistincFilter()
+    {
+       $query = "SELECT * FROM tbl_school_year_details_section TSYDC LEFT JOIN tbl_school_year_details_grade TSYDG ON TSYDC.gid = TSYDG.gid  WHERE TSYDC.sycode IN (SELECT TUSY.sycode FROM tbl_user_school_year TUSY WHERE TUSY.status = 'ACTIVATED')";
+       $userSchoolYearGrade = $this->getDBResult($query);
        return $userSchoolYearGrade;
     }
 
@@ -461,6 +519,30 @@ class portalController extends DBController
         $this->updateDB($query, $params);
     }
 
+    function updateGradeRoomInformtionSchoolYear($sid, $sycode, $rid, $gid)
+    {
+        $query = "UPDATE tbl_school_year_details_section SET gid = ?, rid = ? WHERE sid = ? AND sycode = ?";
+        $params = array( 
+            array(
+                "param_type" => "i",
+                "param_value" => $gid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $rid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $sycode
+            )
+        );
+        $this->updateDB($query, $params);
+    }
+
     function schoolYearActivation($sycode)
     {
         $query = "UPDATE tbl_user_school_year SET status = ? WHERE sycode = ?";
@@ -516,11 +598,11 @@ class portalController extends DBController
         return $yearActivated;
     }
 
-    function newSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $region_text, $province_text, $city_text, $barangay_text)
+    function newSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $gender, $region_text, $province_text, $city_text, $barangay_text)
     {
         date_default_timezone_set('Asia/Manila');
 
-        $query = "INSERT INTO tbl_school_enrollee_fresh (uid,sycode,email,fname,mname,lname,average,street,region_text,province_text,city_text,barangay_text,status,date_created) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
+        $query = "INSERT INTO tbl_school_enrollee_fresh (uid,sycode,email,fname,mname,lname,average,gender,street,region_text,province_text,city_text,barangay_text,status,date_created) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
 
         $params = array(
             array(
@@ -550,6 +632,10 @@ class portalController extends DBController
             array(
                 "param_type" => "i",
                 "param_value" => $average
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $gender
             ),
             array(
                 "param_type" => "s",
@@ -583,11 +669,11 @@ class portalController extends DBController
         $this->insertDB($query, $params);
     }
 
-    function transSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $region_text, $province_text, $city_text, $barangay_text)
+    function transSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $gender, $region_text, $province_text, $city_text, $barangay_text)
     {
         date_default_timezone_set('Asia/Manila');
 
-        $query = "INSERT INTO tbl_school_enrollee_trans (uid,sycode,email,fname,mname,lname,average,street,region_text,province_text,city_text,barangay_text,status,date_created) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
+        $query = "INSERT INTO tbl_school_enrollee_trans (uid,sycode,email,fname,mname,lname,average,gender,street,region_text,province_text,city_text,barangay_text,status,date_created) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
 
         $params = array(
             array(
@@ -617,6 +703,10 @@ class portalController extends DBController
             array(
                 "param_type" => "i",
                 "param_value" => $average
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $gender
             ),
             array(
                 "param_type" => "s",
@@ -773,11 +863,43 @@ class portalController extends DBController
         $this->insertDB($query, $params);
     }
 
-    function addFirstFreshRecord($sycode,$uid,$fname,$address,$rgid,$sid)
+    function getMapOverall()
+    {
+        $query = "SELECT * FROM tbl_school_year_details_map";
+        $allMap = $this->getDBResult($query);
+        return $allMap;
+    }
+
+    function getChartActiveSchoolYear()
+    {
+        $query = "SELECT gender, count(*) as number FROM  tbl_school_student_record WHERE sycode IN (SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED') GROUP BY gender";
+        $allMap = $this->getDBResult($query);
+        return $allMap;
+    }
+
+    
+    function genMap($mid)
+    {
+   
+        $query = "SELECT * FROM tbl_school_year_details_map WHERE mid = ?";
+
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $mid
+            )
+        );
+
+
+        $schoolRoom = $this->getDBResult($query, $params);
+        return $schoolRoom;
+    }
+
+    function addFirstFreshRecord($sycode,$uid,$fname,$gender,$address,$rgid,$sid)
     {
         date_default_timezone_set('Asia/Manila');
 
-        $query = "INSERT INTO  tbl_school_student_record (sycode,uid,fname,address,current_level,current_section) VALUES (?,?,?,?,?,?)"; 
+        $query = "INSERT INTO  tbl_school_student_record (sycode,uid,fname,gender,address,current_level,current_section) VALUES (?,?,?,?,?,?,?)"; 
 
         $params = array(
             array(
@@ -791,6 +913,10 @@ class portalController extends DBController
             array(
                 "param_type" => "s",
                 "param_value" => $fname
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $gender
             ),
             array(
                 "param_type" => "s",
@@ -903,6 +1029,21 @@ class portalController extends DBController
        
        $checkInformation = $this->getDBResult($query, $params);
        return $checkInformation;
+    }
+
+    function deleteConfirmation($uid)
+    {
+        $query = "DELETE FROM tbl_student_confirmation_for_enrollment WHERE uid = ?"; 
+
+        $params = array( 
+            array(
+                "param_type" => "?",
+                "param_value" => $uid
+            )
+        );
+        
+        $checkInformation = $this->getDBResult($query, $params);
+        return $checkInformation;
     }
 
     function movingUp($sycode, $next_level)
@@ -1153,6 +1294,20 @@ class portalController extends DBController
         return $checkRequestInformation;
     }
 
+    function checkAnnouncement(){
+        date_default_timezone_set('Asia/Manila');
+        $query = "UPDATE tbl_school_announcement SET status = ? WHERE DATE(end) = CURDATE()";
+      
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => 'INACTIVE'
+            )
+        );
+
+        $this->updateDB($query, $params);
+    }
+
 
     function checkRejectRequest($sycode)
     {
@@ -1172,10 +1327,30 @@ class portalController extends DBController
 
     function allAccountStudent()
     {
-        $query = "SELECT * FROM tbl_school_student_record TSSR LEFT JOIN  tbl_user_information TUI ON TSSR.uid = TUI.uid LEFT JOIN  tbl_school_year_details_grade TSYDG ON TSSR.current_section = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid";
+        $query = "SELECT * FROM tbl_school_student_record TSSR LEFT JOIN  tbl_user_information TUI ON TSSR.uid = TUI.uid LEFT JOIN  tbl_school_year_details_grade TSYDG ON TSSR.current_section = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid WHERE TSSR.sycode IN (SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED')";
         $allStudentAccount = $this->getDBResult($query);
         return $allStudentAccount;
     }
+
+    function allAccountStudentFilteredSearch($gid, $sid)
+    {
+        $query = "SELECT * FROM tbl_school_student_record TSSR LEFT JOIN  tbl_user_information TUI ON TSSR.uid = TUI.uid LEFT JOIN  tbl_school_year_details_grade TSYDG ON TSSR.current_section = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid WHERE TSSR.current_level = ? AND TSSR.current_section = ?";
+        
+        $params = array( 
+            array(
+                "param_type" => "i",
+                "param_value" => $gid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            )
+        );
+        
+        $allStudentAccount = $this->getDBResult($query, $params);
+        return $allStudentAccount;
+    }
+
 
     function addTeacherInformationRecord($sycode, $uid, $fname,$mname, $lname, $street, $region_text, $city_text, $barangay_text)
     {
@@ -1235,9 +1410,23 @@ class portalController extends DBController
         return $allTeacherAccount;
     }
 
+    function AllAccountToDisplayTeacher()
+    {
+        $query = "SELECT * FROM tbl_school_teacher_record TSTR LEFT JOIN tbl_user_information TUI ON TSTR.uid = TUI.uid LEFT JOIN teacher_assigned_section TAS ON TAS.uid = TSTR.uid LEFT JOIN tbl_school_year_details_section TSYDS ON TAS.sid = TSYDS.sid LEFT JOIN tbl_school_year_details_grade TSYDG ON TSYDS.gid = TSYDG.gid";
+        $allTeacherAccount = $this->getDBResult($query);
+        return $allTeacherAccount;
+    }
+
     function allAnnoucement()
     {
         $query = "SELECT * FROM  tbl_school_announcement TSA WHERE status = 'ACTIVE'";
+        $allAnnouncement = $this->getDBResult($query);
+        return $allAnnouncement;
+    }
+
+    function allInActiveAnnoucement()
+    {
+        $query = "SELECT * FROM  tbl_school_announcement TSA WHERE status = 'INACTIVE'";
         $allAnnouncement = $this->getDBResult($query);
         return $allAnnouncement;
     }
@@ -1275,6 +1464,62 @@ class portalController extends DBController
         );
 
         $this->insertDB($query, $params);
+    }
+
+    function announcementUpdate($id, $title, $description, $start, $end, $photoPath)
+    {
+        $query = "UPDATE tbl_school_announcement SET title = ?,description = ?,start = ?,end = ?, image_path= ? WHERE id = ?";
+      
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $title
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $description
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $start
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $end
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $photoPath
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $id
+            )
+        );
+
+        $this->updateDB($query, $params);
+    }
+
+    function updateGradeSchoolYearDetails($sycode, $gid, $grade)
+    {
+        $query = "UPDATE tbl_school_year_details_grade SET sycode = ?,grade = ?  WHERE gid = ?";
+      
+        $params = array(
+            array(
+                "param_type" => "i",
+                "param_value" => $sycode
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $grade
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $gid
+            )
+        );
+
+        $this->updateDB($query, $params);
     }
 
     function lostCreation($item, $uid, $rid, $another, $photoPath)
@@ -1316,10 +1561,81 @@ class portalController extends DBController
         $this->insertDB($query, $params);
     }
 
+    function lostUpdateStatusCreation($fid, $status)
+    {
+        $query = "UPDATE tbl_school_lost SET status = ? WHERE fid = ?";
+      
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $status
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $fid
+            )
+        );
+
+        $this->updateDB($query, $params);
+    }
+
+    function lostUpdate($fid, $item, $foundby, $foundin, $status, $another, $photoPath)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "UPDATE tbl_school_lost SET item = ?, foundby = ?, foundin = ?, image_path = ?, status = ?, another = ? WHERE fid = ?";
+      
+        $params = array(
+            array(
+                "param_type" => "s",
+                "param_value" => $item
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $foundby
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $foundin
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $photoPath
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $status
+            ),
+            array(
+                "param_type" => "s",
+                "param_value" => $another
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $fid
+            )
+        );
+
+        $this->updateDB($query, $params);
+    }
+
 
     function allLost()
     {
         $query = "SELECT * FROM  tbl_school_lost TSL LEFT JOIN tbl_school_student_record TSSR ON TSL.foundby = TSSR.uid LEFT JOIN tbl_school_year_details_map TSYDM ON TSL.foundin = TSYDM.id WHERE TSL.status = 'LOST'";
+        $allLost = $this->getDBResult($query);
+        return $allLost;
+    }
+
+    function allLostItemReUpdate()
+    {
+        $query = "SELECT * FROM  tbl_school_lost TSL LEFT JOIN tbl_school_student_record TSSR ON TSL.foundby = TSSR.uid LEFT JOIN tbl_school_year_details_map TSYDM ON TSL.foundin = TSYDM.id WHERE TSL.status = 'LOST'";
+        $allLost = $this->getDBResult($query);
+        return $allLost;
+    }
+
+    function allFound()
+    {
+        $query = "SELECT * FROM  tbl_school_lost TSL LEFT JOIN tbl_school_student_record TSSR ON TSL.foundby = TSSR.uid LEFT JOIN tbl_school_year_details_map TSYDM ON TSL.foundin = TSYDM.id WHERE TSL.status = 'FOUND'";
         $allLost = $this->getDBResult($query);
         return $allLost;
     }
@@ -1496,19 +1812,13 @@ class portalController extends DBController
     function myAttendanceMonitoringToday($uid)
     {
 
-        date_default_timezone_get('Asia/Manila');
-        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ? AND TSMA.date_inserted = ?"; 
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ? AND DATE(TSMA.date_inserted) = CURDATE()"; 
 
         $params = array(
-           
             array(
                 "param_type" => "s",
                 "param_value" => $uid
-            ),
-            array(
-             "param_type" => "s",
-             "param_value" => date('Y-m-d')
-           )
+            )
         );
         
         $userCredentials = $this->getDBResult($query, $params);
@@ -1520,18 +1830,14 @@ class portalController extends DBController
 
         date_default_timezone_get('Asia/Manila');
         $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
-        WHERE TSSR.current_section = ? AND TSMA.date_inserted = ?"; 
+        WHERE TSSR.current_section = ? AND DATE(TSMA.date_inserted) = CURDATE()"; 
 
         $params = array(
            
             array(
                 "param_type" => "i",
                 "param_value" => $sid
-            ),
-            array(
-             "param_type" => "s",
-             "param_value" => date('Y-m-d')
-           )
+            )
         );
         
         $userCredentials = $this->getDBResult($query, $params);
@@ -1541,18 +1847,14 @@ class portalController extends DBController
     function myAttendanceMonitoringTodayGroup($uid)
     {
         date_default_timezone_get('Asia/Manila');
-        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ? AND TSMA.date_inserted = ? GROUP BY TSMA.date_inserted"; 
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id WHERE TSMA.uid = ? AND DATE(TSMA.date_inserted) = CURDATE() GROUP BY TSMA.date_inserted"; 
 
         $params = array(
            
             array(
                 "param_type" => "s",
                 "param_value" => $uid
-            ),
-            array(
-             "param_type" => "s",
-             "param_value" => date('Y-m-d')
-           )
+            )
         );
         
         $userCredentials = $this->getDBResult($query, $params);

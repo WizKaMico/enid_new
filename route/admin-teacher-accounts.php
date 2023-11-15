@@ -13,11 +13,13 @@
                                                         <th scope="col">MIDDLENAME</th>
                                                         <th scope="col">LASTNAME</th>
                                                         <th scope="col">ADDRESS</th>
+                                                        <th scope="col">GRADE</th>
+                                                        <th scope="col">SECTION</th>
                                                       </tr>
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $teacherInfo = $portCont->allAccountTeacher();
+                                                $teacherInfo = $portCont->AllAccountToDisplayTeacher();
                                                 if (!empty($teacherInfo)) {
                                                     foreach ($teacherInfo as $key => $value) { 
                                                 ?>
@@ -28,6 +30,8 @@
                                                     <td><?php echo $teacherInfo[$key]['mname']; ?></td>
                                                     <td><?php echo $teacherInfo[$key]['lname']; ?></td>
                                                     <td><?php echo $teacherInfo[$key]['street']; ?> <?php echo $teacherInfo[$key]['region_text']; ?> <?php echo $teacherInfo[$key]['province_text']; ?> <?php echo $teacherInfo[$key]['city_text']; ?> <?php echo $teacherInfo[$key]['barangay_text']; ?></td>
+                                                    <td><?php echo $teacherInfo[$key]['grade']; ?></td>  
+                                                    <td><?php echo $teacherInfo[$key]['section_name']; ?></td>   
                                                 </tr>
 
                                             <?php } } ?>

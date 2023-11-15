@@ -38,17 +38,17 @@
                                                  <tbody>
                                                 <?php 
                                                 $uid = $userSession[0]['uid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringToday($uid);
-                                                if (!empty($attendanceToday)) {
-                                                    foreach ($attendanceToday as $key => $value) {     
+                                                $attendanceToday1 = $portCont->myAttendanceMonitoringToday($uid);
+                                                if (!empty($attendanceToday1)) {
+                                                    foreach ($attendanceToday1 as $key => $value) {     
                                                 ?>
                                                 <tr>
-                                                    <td><?php echo $attendanceToday[$key]['scid']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['room']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['building']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['timein']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['timeout']; ?></td>
-                                                    <td><?php echo $attendanceToday[$key]['date_inserted']; ?></td>
+                                                    <td><?php echo $attendanceToday1[$key]['scid']; ?></td>
+                                                    <td><?php echo $attendanceToday1[$key]['room']; ?></td>
+                                                    <td><?php echo $attendanceToday1[$key]['building']; ?></td>
+                                                    <td><?php echo $attendanceToday1[$key]['timein']; ?></td>
+                                                    <td><?php echo $attendanceToday1[$key]['timeout']; ?></td>
+                                                    <td><?php echo $attendanceToday1[$key]['date_inserted']; ?></td>
                                                 </tr>
                                             <?php } } ?>
                                          </tbody>

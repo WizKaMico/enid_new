@@ -150,12 +150,22 @@
                                                                 <td>
                                                                   <?php
                                                                    $sycode= $schoolStudents[$key]['sycode'];
+                                                                   $uid = $schoolStudents[$key]['uid'];
                                                                    $checkIfTheSame = $portCont->validateSimilarSyCode($sycode);
+                                                                   $checkResponse = $portCont->studentEnrollmentConsentChecking($uid);
                                                                   ?>
                                                                   <?php if($checkIfTheSame[0]['status'] == 'ACTIVATED'){ ?>
                                                                   <?php echo 'NEW SY REQUIRED'; ?>
                                                                   <?php } else { ?>
+                                                                  <?php if(!empty($checkResponse)) { ?>
+                                                                  <?php if($checkResponse[0]['confirm'] == 'CONFIRM') { ?>
                                                                   <a href='#editReEnrollModal_<?php echo $schoolStudents[$key]['uid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editReEnrollModal_<?php echo $schoolStudents[$key]['uid']; ?>'>ENROLL</a>
+                                                                  <?php } else { ?>
+                                                                  <?php echo 'DECLINE'; ?>  
+                                                                  <?php } ?>
+                                                                  <?php } else { ?>
+                                                                  <?php echo 'NO RESPONSE'; ?>  
+                                                                  <?php } ?>
                                                                   <?php } ?>
                                                                     
                                                                 </td>
@@ -229,6 +239,14 @@
                                         </div>
 
                                         <div class="form-floating mb-3">
+                                            <select class="form-control" name="gender">
+                                                <option value="MALE">MALE</option>
+                                                <option value="FEMALE">FEMALE</option>
+                                            </select>
+                                            <label for="floatingPassword">Gender</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
                                             <select name="region" class="form-control"  id="region"></select>
                                             <input type="hidden" class="form-control" name="region_text" id="region-text" required>
                                             <label for="floatingInput">Region</label>
@@ -294,6 +312,14 @@
                                         <div class="form-floating mb-3">
                                             <input type="text" name="street" class="form-control" id="floatingPassword">
                                             <label for="floatingPassword">Street</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-control" name="gender">
+                                                <option value="MALE">MALE</option>
+                                                <option value="FEMALE">FEMALE</option>
+                                            </select>
+                                            <label for="floatingPassword">Gender</label>
                                         </div>
 
                                         <div class="form-floating mb-3">

@@ -27,7 +27,7 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-chart-pie fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">Charts & Statistics</p>
+                                <a href="home.php?view=charts" class="mb-2">Charts & Statistics</a>
                                 <!-- <h6 class="mb-0">$1234</h6> -->
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                         <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                             <i class="fa fa-school fa-3x text-primary"></i>
                             <div class="ms-3">
-                                <p class="mb-2">School Direction</p>
+                            <a href="home.php?view=direction" class="mb-2">School Direction</a>
                                 <!-- <h6 class="mb-0">$1234</h6> -->
                             </div>
                         </div>

@@ -10,12 +10,19 @@ $userSession = $portCont->getUserDetails($session_id);
 if($userSession[0]['designation'] == 3){
 $uid = $userSession[0]['uid'];
 $info = $portCont->getStudentDetails($uid);
+$ActiveSchoolYear = $portCont->checkTheActiveSchoolYear();
 $apiUrl = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . urlencode($uid);
 }
 
 if($userSession[0]['designation'] == 2){
     $uid = $userSession[0]['uid'];
 $tinfo = $portCont->myTeacherInformation($uid);
+}
+
+if(!empty($_GET['mid']))
+{
+    $mid = $_GET['mid'];
+    $mapSpecificCall = $portCont->genMap($mid);
 }
 
 $email = $userSession[0]['email'];
@@ -92,6 +99,21 @@ if (! empty($_GET["action"])) {
             }
             break;
 
+        case "updateGrade":
+            if(isset($_POST['update'])){
+                $sycode =  $_POST['sycode'];
+                $gid = $_POST['gid'];
+                $grade = $_POST['grade'];
+
+                if(!empty($sycode) && !empty($gid) && !empty($grade))
+                {
+                    $portCont->updateGradeSchoolYearDetails($sycode, $gid, $grade);
+                    header('Location: home.php?view=school_year_detail&sycode='.$sycode.'&message=success');
+                }else{
+                    header('Location: home.php?view=school_year_detail&sycode='.$sycode.'&message=error');
+                }
+            }
+
         case "school_year_detail_section":
             if(isset($_POST['add'])){
                 $sycode =  $_POST['sycode'];
@@ -145,6 +167,23 @@ if (! empty($_GET["action"])) {
             }
             break;
 
+
+        case "updateGradeRoom":
+            if(isset($_POST['update'])){
+                $sycode = $_POST['sycode']; 
+                $sid = $_POST['sid'];
+                $rid = $_POST['rid'];
+                $gid = $_POST['gid']; 
+
+                if(!empty($sycode) && !empty($sid) && !empty($rid) && !empty($gid)){
+                    $portCont->updateGradeRoomInformtionSchoolYear($sid, $sycode, $rid, $gid);
+                    header('Location: home.php?view=school_year_detail&sycode='.$sycode.'&message=success');
+                }else{
+                    header('Location: home.php?view=school_year_detail&sycode='.$sycode.'&message=error');
+                }
+            }
+            break;
+
         case "school_year_activation":
             if(isset($_POST['activate'])){
                 $sycode = $_POST['sycode'];
@@ -191,14 +230,15 @@ if (! empty($_GET["action"])) {
                 $lname = $_POST['lname'];
                 $average = $_POST['average'];
                 $street = $_POST['street'];
+                $gender = $_POST['gender'];
                 $region_text = $_POST['region_text'];
                 $province_text = $_POST['province_text'];
                 $city_text = $_POST['city_text'];
                 $barangay_text = $_POST['barangay_text'];
 
-                if(!empty($sycode) && !empty($email) && !empty($fname) && !empty($mname) && !empty($lname) && !empty($average) && !empty($street) && !empty($region_text) && !empty($province_text) && !empty($city_text) && !empty($barangay_text))
+                if(!empty($sycode) && !empty($email) && !empty($fname) && !empty($mname) && !empty($lname) && !empty($average) && !empty($street) && !empty($gender) && !empty($region_text) && !empty($province_text) && !empty($city_text) && !empty($barangay_text))
                 {
-                    $portCont->newSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $region_text, $province_text, $city_text, $barangay_text); 
+                    $portCont->newSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $gender, $region_text, $province_text, $city_text, $barangay_text); 
                     header('Location: home.php?view=enrollment&message=success');    
                 }else{
                     header('Location: home.php?view=enrollment&message=error');
@@ -215,14 +255,15 @@ if (! empty($_GET["action"])) {
                     $lname = $_POST['lname'];
                     $average = $_POST['average'];
                     $street = $_POST['street'];
+                    $gender = $_POST['gender'];
                     $region_text = $_POST['region_text'];
                     $province_text = $_POST['province_text'];
                     $city_text = $_POST['city_text'];
                     $barangay_text = $_POST['barangay_text'];
     
-                    if(!empty($sycode) && !empty($email) && !empty($fname) && !empty($mname) && !empty($lname) && !empty($average) && !empty($street) && !empty($region_text) && !empty($province_text) && !empty($city_text) && !empty($barangay_text))
+                    if(!empty($sycode) && !empty($email) && !empty($fname) && !empty($mname) && !empty($lname) && !empty($average) && !empty($street) && !empty($gender) && !empty($region_text) && !empty($province_text) && !empty($city_text) && !empty($barangay_text))
                     {
-                        $portCont->transSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $region_text, $province_text, $city_text, $barangay_text); 
+                        $portCont->transSchoolEnrolleee($sycode, $email, $fname, $mname, $lname, $average, $street, $gender, $region_text, $province_text, $city_text, $barangay_text); 
                         header('Location: home.php?view=enrollment&message=success');    
                     }else{
                         header('Location: home.php?view=enrollment&message=error');
@@ -249,6 +290,7 @@ if (! empty($_GET["action"])) {
                                     if(!empty(strtoupper($checkGradeSycode[0]['grade']) == 'GRADE 1')){
                                         $rgid = $checkGradeSycode[0]['gid'];
                                         $average = $checkSycode[0]['average'];
+                                        $gender = $checkSycode[0]['gender'];
                                         $fname = $checkSycode[0]['fname'].''.$checkSycode[0]['mname'].''.$checkSycode[0]['lname'];
                                         $address = $checkSycode[0]['street'].''.$checkSycode[0]['region_text'].''.$checkSycode[0]['province_text'].''.$checkSycode[0]['barangay_text'];
                                         $email = $checkSycode[0]['email']; 
@@ -262,7 +304,7 @@ if (! empty($_GET["action"])) {
                                         $levelSectionBracketing = $portCont->getSchoolYearDetailsSectionSpecialBracketing($sycode,$average,$rgid);
                                         if(!empty($levelSectionBracketing)){
                                             $sid = $levelSectionBracketing[0]['sid'];
-                                            $portCont->addFirstFreshRecord($sycode,$uid,$fname,$address,$rgid,$sid); 
+                                            $portCont->addFirstFreshRecord($sycode,$uid,$fname,$gender,$address,$rgid,$sid); 
                                             $portCont->addFirstFreshHistory($sycode,$uid,$rgid,$sid,$average); 
                                             header('Location: home.php?view=enrollment&message=success');  
                                         }
@@ -295,6 +337,7 @@ if (! empty($_GET["action"])) {
                                 if(!empty($checkGradeSycode)){
                                         $rgid = $gid;
                                         $average = $checkSycode[0]['average'];
+                                        $gender = $checkSycode[0]['gender'];
                                         $fname = $checkSycode[0]['fname'].''.$checkSycode[0]['mname'].''.$checkSycode[0]['lname'];
                                         $address = $checkSycode[0]['street'].''.$checkSycode[0]['region_text'].''.$checkSycode[0]['province_text'].''.$checkSycode[0]['barangay_text'];
                                         $email = $checkSycode[0]['email']; 
@@ -308,7 +351,7 @@ if (! empty($_GET["action"])) {
                                         $levelSectionBracketing = $portCont->getSchoolYearDetailsSectionSpecialBracketing($sycode,$average,$rgid);
                                         if(!empty($levelSectionBracketing)){
                                             $sid = $levelSectionBracketing[0]['sid'];
-                                            $portCont->addFirstFreshRecord($sycode,$uid,$fname,$address,$rgid,$sid); 
+                                            $portCont->addFirstFreshRecord($sycode,$uid,$fname,$gender,$address,$rgid,$sid); 
                                             $portCont->addFirstFreshHistory($sycode,$uid,$rgid,$sid,$average); 
                                             header('Location: home.php?view=enrollment&message=success');  
                                         }
@@ -334,7 +377,7 @@ if (! empty($_GET["action"])) {
                     {
                         $ValidateImpersonation = $portCont->checkStudentRecord($rid);
                         if(!empty($ValidateImpersonation)){
-                            $current_level = $ValidateImpersonation[0]['current_level']; 
+                            $current_level = $ValidateImpersonation[0]['grade']; 
                             // Extract numeric part from the string
                             preg_match('/\d+/', $current_level, $matches);
                             $numeric_level = intval($matches[0]);
@@ -353,6 +396,7 @@ if (! empty($_GET["action"])) {
                                                 $sid = $levelSectionBracketing[0]['sid'];
                                                 $portCont->updateStudentRecord($sycode,$uid,$rid,$rgid,$sid);
                                                 $portCont->addFirstFreshHistory($sycode,$uid,$rgid,$sid,$average);
+                                                $portCont->deleteConfirmation($uid);
                                                 header('Location: home.php?view=enrollment&message=success'); 
                                             }else{
                                                 header('Location: home.php?view=enrollment&message=error&rgid='.$rgid.'&sycode='.$sycode.'&average='.$average); 
@@ -485,6 +529,54 @@ if (! empty($_GET["action"])) {
                         }
                         break;
 
+
+                    case "updateAnnouncement":
+                        if(isset($_POST['update'])){
+                            $id = $_POST['id'];
+                            $title = $_POST['title'];
+                            $description = $_POST['description'];
+                            $start = $_POST['start'];
+                            $end = $_POST['end'];
+                            $photoName = $_FILES['photo']['name'];
+                            $photoTmpName = $_FILES['photo']['tmp_name'];
+
+                            if(!empty($id) && !empty($title) && !empty($description) && !empty($start) && !empty($end) && !empty($photoName))
+                            {
+                                $uploadDir = 'uploads'; // Set your desired upload directory
+                                if (!file_exists($uploadDir)) {
+                                    mkdir($uploadDir, 0777, true);
+                                }
+                    
+                                // Move the uploaded file to the directory
+                                $photoPath = $uploadDir . '/' . $photoName;
+                                move_uploaded_file($photoTmpName, $photoPath);
+                                $portCont->announcementUpdate($id, $title, $description, $start, $end, $photoPath);
+                                header('Location: home.php?view=announcement&message=success');
+                            }else{
+                                header('Location: home.php?view=announcement&message=error');
+                            }
+                        }   
+                        break;
+
+                    case "generatemap":
+                        if(isset($_POST['generate']))
+                        {
+                            $mid = $_POST['pieceIdInput']; 
+                            $checkMap = $portCont->genMap($mid);
+                            if(!empty($checkMap))
+                            {
+                                header('Location: home.php?view=direction&mid='.$checkMap[0]["mid"]);
+                               
+                            }else
+                            {
+                                header('Location: home.php?view=direction');
+                            }
+                          
+        
+                        }
+                        break;
+
+
                     case "addlost":
                         if(isset($_POST['add'])){
                             $item = $_POST['item'];
@@ -509,6 +601,51 @@ if (! empty($_GET["action"])) {
                             }else{
                                 header('Location: home.php?view=lost&message=error');
                             }
+                        }
+                        break;
+
+                    case "updateStatuslost":
+                        if(isset($_POST['update']))
+                        {
+                            $fid = $_POST['fid']; 
+                            $status = $_POST['status']; 
+
+                            if(!empty($fid) && !empty($status))
+                            {
+                                $portCont->lostUpdateStatusCreation($fid, $status);
+                                header('Location: home.php?view=lost&message=success');
+                            }else{
+                                header('Location: home.php?view=lost&message=error');
+                            }
+                        }
+                        break;
+
+                    case "updateLost":
+                        if(isset($_POST['update'])){
+                            $fid = $_POST['fid'];
+                            $item = $_POST['item'];
+                            $foundby = $_POST['foundby'];
+                            $foundin = $_POST['foundin'];
+                            $status = $_POST['status'];
+                            $another = $_POST['another'];
+                            $photoName = $_FILES['photo']['name'];
+                            $photoTmpName = $_FILES['photo']['tmp_name'];
+
+                            if(!empty($fid) && !empty($item)  && !empty($foundby)  && !empty($foundin)  && !empty($status)  && !empty($another)  && !empty($photoName)){
+                                $uploadDir = 'uploads'; // Set your desired upload directory
+                                if (!file_exists($uploadDir)) {
+                                    mkdir($uploadDir, 0777, true);
+                                }
+                    
+                                // Move the uploaded file to the directory
+                                $photoPath = $uploadDir . '/' . $photoName;
+                                move_uploaded_file($photoTmpName, $photoPath);
+                                $portCont->lostUpdate($fid, $item, $foundby, $foundin, $status, $another, $photoPath);
+                                header('Location: home.php?view=lost&message=success');
+                            }else{
+                                header('Location: home.php?view=lost&message=error');
+                            }
+
                         }
                         break;
 
@@ -559,6 +696,51 @@ if (! empty($_GET["action"])) {
                             }else{
                                 header('Location: home.php?view=teacher-accounts&message=error');
                             }
+                        }
+                        break;
+
+
+                    case "GradeSectionSearch":
+                        if(isset($_POST['search'])){
+                            $gid = $_POST['gid'];
+                            $sid = $_POST['sid']; 
+
+                            if(!empty($gid) && !empty($sid))
+                            {
+                                header('Location: home.php?view=student-accounts&gid='.$gid.'&sid='.$sid);
+                            }else{
+                                header('Location: home.php?view=student-accounts');
+                            }
+                        }
+                        break;
+
+                    case "GradeSectionSearch":
+                        if(isset($_POST['clear'])){
+                            header('Location: home.php?view=student-accounts');
+                        }
+                        break;
+
+                    case "proceedToEnroll":
+                        if(isset($_POST['confirm'])){
+                           $uid = $_POST['uid']; 
+                           $sycode = $_POST['sycode']; 
+                           $confirm = 'CONFIRM';
+                           if(!empty($sycode) && !empty($sycode)){
+                            $portCont->studentEnrollmentConsent($uid, $sycode, $confirm);
+                            header('Location: home.php?view=enrollnow&message=success');
+                           }
+                        }
+                        break;
+
+                    case "proceedToEnroll":
+                        if(isset($_POST['decline'])){
+                           $uid = $_POST['uid']; 
+                           $sycode = $_POST['sycode'];
+                           $confirm = 'DECLINE';
+                           if(!empty($sycode) && !empty($sycode)){
+                            $portCont->studentEnrollmentConsent($uid, $sycode, $confirm);
+                            header('Location: home.php?view=enrollnow&message=success');
+                           } 
                         }
                         break;
 

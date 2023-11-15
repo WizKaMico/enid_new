@@ -103,7 +103,7 @@
                     </div>
                     <div class="ms-3">
                         <h6 class="mb-0"><?php echo strtoupper($filteredEmail); ?></h6>
-                        <span><?php echo strtoupper($userSession[0]['role']); ?></span>
+                        <span><?php echo strtoupper($userSession[0]['role']); ?> </span>
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
@@ -150,6 +150,10 @@
             <?php if(!empty($_GET['view'])){ ?>
             <?php if($_GET['view'] == 'home') { ?>
             <?php include('route/admin-home.php'); ?>
+            <?php } else if($_GET['view'] == 'charts') { ?>
+            <?php include('route/admin-charts.php'); ?> 
+            <?php } else if($_GET['view'] == 'direction') { ?>
+            <?php include('route/admin-direction.php'); ?>   
             <?php } else if($_GET['view'] == 'request') { ?>
             <?php include('route/admin-studentrequest.php'); ?>
             <?php } else if($_GET['view'] == 'request_history') { ?>
@@ -170,6 +174,8 @@
             <?php include('route/admin-announcement.php'); ?>
             <?php } else if($_GET['view'] == 'lost') { ?>
             <?php include('route/admin-lost.php'); ?>
+
+            
             <?php }  else { ?>
             
             <?php }  ?>
@@ -185,6 +191,8 @@
             <?php include('route/student-request.php'); ?>
             <?php } else if($_GET['view'] == 'request_history') { ?>
             <?php include('route/student-request_history.php'); ?>
+            <?php } else if($_GET['view'] == 'enrollnow') { ?>
+            <?php include('route/student-enrollment.php'); ?>    
             <?php } else if($_GET['view'] == 'myclass') { ?>
             <?php include('route/student-class.php'); ?>
             <?php } else if($_GET['view'] == 'monitoring') { ?>
@@ -301,6 +309,46 @@
                     initializeDataTable('#myOfficialTable');
                 });
             </script>
+            <?php } else if($_GET['view'] == 'direction') { ?>
+
+            <script src="js/map.js"></script> 
+            <script src="js/map-detailedmap-aggrid.js"></script>
+            <?php if(!empty($_GET['mid'])) { ?>
+            <script>
+            var specMap = <?php echo json_encode($mapSpecificCall); ?>;
+            console.log(specMap)
+            </script>
+            <script src="js/map-specmap-aggrid.js"></script>
+            <?php } ?>
+
+            <?php } else if($_GET['view'] == 'charts') { ?>
+            
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>  
+                <script type="text/javascript">  
+                    google.charts.load('current', {'packages':['corechart']});  
+                    google.charts.setOnLoadCallback(drawChart);  
+                    function drawChart(){  
+                    var data = google.visualization.arrayToDataTable([  
+                                ['Gender', 'Number'],  
+                                <?php  
+                                    $checkStat = $portCont->getChartActiveSchoolYear();
+                                    if(!empty($checkStat)){
+                                        foreach ($checkStat as $key => $value) {  
+                                        echo "['".$checkStat[$key]["gender"]."', ".$checkStat[$key]["number"]."],";  
+                                        }
+                                    }  
+                                ?>  
+                            ]);  
+                    var options = {  
+                                title: 'Percentage of Male and Female Active Students For Active School Year',  
+                                //is3D:true,  
+                                pieHole: 0.4  
+                            };  
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));  
+                    chart.draw(data, options);  
+                }  
+                </script>
+
             <?php } else if($_GET['view'] == 'student-accounts') { ?>
                 
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -442,6 +490,7 @@
 
                     // Initialize DataTables for different tables
                     initializeDataTable('#myAnnouncementTable');
+                    initializeDataTable('#myInactiveAnnouncementTable');
                 });
             </script>
 
@@ -566,6 +615,7 @@
 
                     // Initialize DataTables for different tables
                     initializeDataTable('#myLost');
+                    initializeDataTable('#myFound');
                 });
             </script>
             <?php }  else { ?>

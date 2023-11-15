@@ -68,13 +68,14 @@
                                                                 <td><?php echo $schoolYearInformation[$key]['room']; ?> - <?php echo $schoolYearInformation[$key]['building']; ?></td>
                                                                 <td>
                                                                   
-                                                                <a href='#editInfoModal_<?php echo $schoolYearInformation[$key]['sid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editInfoModal_<?php echo $schoolYearInformation[$key]['sid']; ?>'>Edit</a>
-
-                                                                  
+                                                                <a href='#editInfoModal_<?php echo $schoolYearInformation[$key]['sid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editInfoModal_<?php echo $schoolYearInformation[$key]['sid']; ?>'><i class="fa fa-book"></i></a>
+                                                                <a href='#editInfoGradeModal_<?php echo $schoolYearInformation[$key]['sid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editInfoGradeModal_<?php echo $schoolYearInformation[$key]['sid']; ?>'><i class="fa fa-book"></i></a>  
+                                                               
                                                                 </td>
                                                             </tr>
                                                             <?php include('modal/edit_details_modal.php'); ?>
-                                                             <?php } } ?>
+                                                          
+                                                            <?php } } ?>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -122,6 +123,7 @@
                                                         <tr>
                                                             <th scope="col">#</th>
                                                             <th scope="col">GRADE</th>
+                                                            <th scope="col">ACTION</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -133,7 +135,11 @@
                                                         <tr>
                                                             <th scope="row"><?php echo $schoolYearGrade[$key]['gid']; ?></th>
                                                             <td><?php echo $schoolYearGrade[$key]['grade']; ?></td>
+                                                            <td>
+                                                            <a href='#editGradeModal_<?php echo $schoolYearGrade[$key]['gid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editGradeModal_<?php echo $schoolYearGrade[$key]['gid']; ?>'>Edit</a>  
+                                                            </td>        
                                                         </tr>
+                                                        <?php include('modal/edit_grade_modal.php'); ?>
                                                         <?php } } ?>
                                                     </tbody>
                                                 </table>
