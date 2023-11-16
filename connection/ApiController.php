@@ -1975,7 +1975,7 @@ class portalController extends DBController
             ),
             array(
                 "param_type" => "i",
-                "param_value" => $sid
+                "param_value" => $uid
             )
         );
         $this->updateDB($query, $params);
@@ -2008,22 +2008,76 @@ class portalController extends DBController
     {
         $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR
         ON TSMA.uid = TSSR.uid LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section 
-        = TSYDS.sid"; 
+        = TSYDS.sid AND TSSR.sycode IN (SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED')"; 
 
         $allMonitoring = $this->getDBResult($query);
+        return $allMonitoring;
+    }
+
+    function myAttendanceMonitoringOverallNoSpecificSearchable($gid, $sid)
+    {
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR
+        ON TSMA.uid = TSSR.uid LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section 
+        = TSYDS.sid WHERE TSSR.current_level = ? AND TSSR.current_section = ? AND TSSR.sycode IN (SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED')"; 
+
+            $params = array(
+                    
+                array(
+                    "param_type" => "i",
+                    "param_value" => $gid
+                ),
+                array(
+                    "param_type" => "i",
+                    "param_value" => $sid
+                )
+
+            );
+
+        $allMonitoring = $this->getDBResult($query,$params);
         return $allMonitoring;
     }
 
     function myAttendanceMonitoringTodayOverall()
     {
 
-        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR
-        ON TSMA.uid = TSSR.uid LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section 
-        = TSYDS.sid WHERE TSMA.date_inserted = NOW()"; 
+        $query = "SELECT * 
+        FROM tbl_school_monitoring_attendance TSMA 
+        LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id 
+        LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid 
+        LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid 
+        LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid 
+        WHERE DATE(TSMA.date_inserted) = CURDATE() AND TSSR.sycode IN (SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED')
+        ORDER BY TSMA.SCID DESC"; 
 
         $allMonitoring = $this->getDBResult($query);
         return $allMonitoring;
 
+    }
+
+    function myAttendanceMonitoringTodayOverallSpecificGradeAndSection($gid,$sid)
+    {
+        $query = "SELECT * 
+        FROM tbl_school_monitoring_attendance TSMA 
+        LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id 
+        LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid 
+        LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid 
+        LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid 
+        WHERE DATE(TSMA.date_inserted) = CURDATE() AND TSSR.current_level = ? AND TSSR.current_section = ? AND TSSR.sycode IN (SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED')"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "i",
+                "param_value" => $gid
+            ),
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            ),
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
     }
 
     function checkTotalStudentForTheActivatedSY()

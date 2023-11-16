@@ -45,6 +45,7 @@
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
+                                                        <th scope="col">STUDENT</th>
                                                         <th scope="col">ROOM</th>
                                                         <th scope="col">BUILDING</th>
                                                         <th scope="col">TIME-IN</th>
@@ -61,6 +62,7 @@
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $attendanceToday[$key]['scid']; ?></td>
+                                                    <td><?php echo $attendanceToday[$key]['fname']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['room']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['building']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['timein']; ?></td>
@@ -94,6 +96,7 @@
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
+                                                        <th scope="col">STUDENT</th>
                                                         <th scope="col">ROOM</th>
                                                         <th scope="col">BUILDING</th>
                                                         <th scope="col">TIME-IN</th>
@@ -110,6 +113,7 @@
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $attendanceToday[$key]['scid']; ?></td>
+                                                    <td><?php echo $attendanceToday[$key]['fname']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['room']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['building']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['timein']; ?></td>
@@ -143,6 +147,7 @@
                                                   <thead>
                                                       <tr>
                                                         <th scope="col">AID</th>
+                                                        <th scope="col">STUDENT</th>
                                                         <th scope="col">ROOM</th>
                                                         <th scope="col">BUILDING</th>
                                                         <th scope="col">TIME-IN</th>
@@ -159,6 +164,7 @@
                                                 ?>
                                                 <tr>
                                                     <td><?php echo $attendanceToday[$key]['scid']; ?></td>
+                                                    <td><?php echo $attendanceToday[$key]['fname']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['room']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['building']; ?></td>
                                                     <td><?php echo $attendanceToday[$key]['timein']; ?></td>

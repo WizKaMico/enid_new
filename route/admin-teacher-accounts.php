@@ -63,7 +63,9 @@
                                                     <?php 
                                                         $schoolYearActivated = $portCont->getYearActivated();
                                                         if (!empty($schoolYearActivated)) {
-                                                            foreach ($schoolYearActivated as $key => $value) {     
+                                                            foreach ($schoolYearActivated as $key => $value) {
+                                                          
+
                                                     ?>  
                                                      <option value="<?php echo $schoolYearActivated[$key]['sycode']; ?>"><?php echo $schoolYearActivated[$key]['year_from']; ?> - <?php echo $schoolYearActivated[$key]['year_to']; ?> (<?php echo $schoolYearActivated[$key]['sycode']; ?>)</option>       
                                                     <?php } } ?>
@@ -139,6 +141,9 @@
                                             <label for="floatingInput">SYCODE</label>
                                         </div>
 
+                                        <!-- $ActiveSchoolYear = $portCont->checkTheActiveSchoolYear();
+                                                            if(!empty($ActiveSchoolYear)) {
+                                                                if($ActiveSchoolYear[0]['sycode'] == $schoolYearActivated[$key]['sycode']){ -->
                                         <div class="form-floating mb-3">
                                             <select class="form-control" name="uid" id="floatingInput">
                                                     <?php 
@@ -146,10 +151,11 @@
                                                         if (!empty($schoolTeacher)) {
                                                             foreach ($schoolTeacher as $key => $value) {  
                                                             $uid = $schoolTeacher[$key]['uid'];
-                                                            $checkExst = $portCont->checkIfExistingAlreadyTeacher($uid);  
-                                                            if(!empty($checkExst)) { 
+                                                            // $checkExst = $portCont->checkIfExistingAlreadyTeacher($uid);  
+                                                            $ActiveSchoolYear = $portCont->checkTheActiveSchoolYear();
+                                                            if($ActiveSchoolYear[0]['sycode'] == $schoolYearActivated[$key]['sycode']){
                                                     ?>  
-                                                       
+                                                       <option value="<?php echo $schoolTeacher[$key]['uid']; ?>">(<?php echo $schoolTeacher[$key]['uid']; ?>) <?php echo $schoolTeacher[$key]['lname']; ?>, <?php echo $schoolTeacher[$key]['fname']; ?></option>
                                                      <?php } else { ?>
                                                         <option value="<?php echo $schoolTeacher[$key]['uid']; ?>">(<?php echo $schoolTeacher[$key]['uid']; ?>) <?php echo $schoolTeacher[$key]['lname']; ?>, <?php echo $schoolTeacher[$key]['fname']; ?></option>
                                                      <?php } ?>

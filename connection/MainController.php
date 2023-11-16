@@ -720,6 +720,27 @@ if (! empty($_GET["action"])) {
                         }
                         break;
 
+                    case "GradeSectionSearchMonitoring":
+                        if(isset($_POST['search'])){
+                            $gid = $_POST['gid'];
+                            $sid = $_POST['sid']; 
+
+                            if(!empty($gid) && !empty($sid))
+                            {
+                                header('Location: home.php?view=monitoring&gid='.$gid.'&sid='.$sid);
+                            }else{
+                                header('Location: home.php?view=monitoring');
+                            }
+                        }
+                        break;
+
+                        case "GradeSectionSearchMonitoring":
+                            if(isset($_POST['clear'])){
+                                header('Location: home.php?view=monitoring');
+                            }
+                            break;
+
+
                     case "proceedToEnroll":
                         if(isset($_POST['confirm'])){
                            $uid = $_POST['uid']; 
