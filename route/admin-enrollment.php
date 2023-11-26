@@ -15,12 +15,19 @@
                                         aria-controls="pills-trans" aria-selected="false">NEW ENROLLEE (TRANS)</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-preenroll1-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-preenroll1" type="button" role="tab"
+                                        aria-controls="pills-preenroll1" aria-selected="false">PRE-ENROLL</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="pills-reenroll-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-reenroll" type="button" role="tab"
                                         aria-controls="pills-reenroll" aria-selected="false">RE-ENROLL</button>
                                 </li>
+                               
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
+                            
                                 <div class="tab-pane fade show active" id="pills-freshman" role="tabpanel" aria-labelledby="pills-freshman-tab">
                                     NOTE : By approving the freshman it is going straight and automatic to re-enroll tab, student will be getting an email for there initial username (LRN) and password that they can change once validated
                                               <div class="col-sm-12 col-sm-offset-2">
@@ -116,6 +123,44 @@
                                               </div>                                     
                                
                                 </div>
+
+                                <div class="tab-pane fade" id="pills-preenroll1" role="tabpanel" aria-labelledby="pills-preenroll1-tab">
+                                NOTE : By Pre-enrolling student   
+                                <div class="col-sm-12 col-sm-offset-2">
+                                                <hr />
+                                                <div class="row">
+                                                    <table id="myPreEnrollTable" class="table table-striped" style="text-align:center;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">LRN</th>
+                                                                <th scope="col">EMAIL</th>
+                                                                <th scope="col">FNAME</th>
+                                                                <th scope="col">AVE</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php 
+                                                                $schoolPreEnroll = $portCont->getAllPreEnroll();
+                                                                if (!empty($schoolPreEnroll)) {
+                                                                    foreach ($schoolPreEnroll as $key => $value) {   
+
+                                                            ?>
+                                                            <tr>
+                                                                <th scope="row"><?php echo $schoolPreEnroll[$key]['uid']; ?></th>
+                                                                <td><?php echo $schoolPreEnroll[$key]['email']; ?></td>
+                                                                <td><?php echo $schoolPreEnroll[$key]['lname']; ?>,<?php echo $schoolPreEnroll[$key]['fname']; ?><?php echo $schoolPreEnroll[$key]['mname']; ?></td>
+                                                                <td><?php echo $schoolPreEnroll[$key]['average']; ?></td>
+                                                               
+
+                                                            </tr>
+                                            
+                                                            <?php } } ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                              </div>                                              
+                                </div>                                       
+
                                 <div class="tab-pane fade" id="pills-reenroll" role="tabpanel" aria-labelledby="pills-reenroll-tab">
                                 NOTE : By re-enrolling a current student you need to understand that this is the list of the currently enrolled student and you are going to move them to the next grade
                                              <div class="col-sm-12 col-sm-offset-2">
@@ -196,6 +241,11 @@
                                         data-bs-target="#pills-transferee" type="button" role="tab"
                                         aria-controls="pills-transferee" aria-selected="false">TRANSFEREE</button>
                                 </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-preenroll-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-preenroll" type="button" role="tab"
+                                        aria-controls="pills-preenroll" aria-selected="false">PRE-ENROLL</button>
+                                </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-newstudent" role="tabpanel" aria-labelledby="pills-newstudent-tab">
@@ -274,6 +324,7 @@
                                         <button type="submit" name="add" style="width:100%;" class="btn btn-primary">ENROLL</button>
                                     </form>
                                 </div>
+                                
                                 <div class="tab-pane fade" id="pills-transferee" role="tabpanel" aria-labelledby="pills-transferee-tab">
                                     NOTE : Your are now checking a transferee student enrollee form
                                     <form action="home.php?view=enrollment&action=enrolltrans" method="POST"> 
@@ -348,6 +399,21 @@
                                     
 
                                         <button type="submit" name="add" style="width:100%;" class="btn btn-primary">ENROLL</button>
+                                    </form>     
+                                </div>
+
+                                <div class="tab-pane fade" id="pills-preenroll" role="tabpanel" aria-labelledby="pills-preenroll-tab">
+                                NOTE : Your are now upload pre-enrollee
+                                <form class="form-horizontal well" action="home.php?view=enrollment&action=preenrollState" method="post" name="upload_excel" enctype="multipart/form-data">
+                               
+                                    <div class="form-floating mb-3">
+                                         <input type="file" name="file" id="file" class="form-control">
+                                    </div>
+                                    
+                                   
+                                        <button type="submit" id="submit"  style="width:100%;" name="Import" class="btn btn-primary">Upload</button>
+                                   
+                              </form>
                                 </div>
                             </div>
                         </div>

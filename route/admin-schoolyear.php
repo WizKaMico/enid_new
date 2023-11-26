@@ -10,12 +10,12 @@
                         <div class="bg-light rounded h-100 p-4">
                             <h6 class="mb-4">ADD SCHOOL YEAR</h6>
                             <form action="home.php?view=schoolyear&action=schoolyear" method="POST"> 
-                                <div class="form-floating mb-3">
-                                    <input type="date" name="year_from" class="form-control" id="floatingInput">
+                              <div class="form-floating mb-3">
+                                    <input type="number" name="year_from" class="form-control" id="floatingInput" placeholder="From Year" min="2023" max="4000">
                                     <label for="floatingInput">From Year</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="date" name="year_to" class="form-control" id="floatingPassword">
+                                    <input type="number" name="year_to" class="form-control" id="floatingPassword" placeholder="To Year" min="2024" max="4000">
                                     <label for="floatingPassword">To Year</label>
                                 </div>
                                 <button type="submit" name="add" style="width:100%;" class="btn btn-primary">Add School Year</button>

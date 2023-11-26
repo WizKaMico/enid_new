@@ -25,8 +25,13 @@
                             <h6 class="mb-4">STUDENT DETAILS</h6>
                                     <hr />
                                 <?php if(!empty($_GET['uid'])) { ?>
-                                <?php $uid = $_GET['uid']; ?>
-                                <?php $scannedDetails = $portCont->checkOutputScannedUid($uid); ?>
+                                <?php 
+                                    $uid = $_GET['uid']; 
+                                    $room_id = $_GET['room_id'];
+
+                                    ?>
+
+                                <?php $scannedDetails = $portCont->checkOutputScannedUid($uid,$room_id); ?>
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="floatingInput"
                                         value="<?php echo $scannedDetails[0]['fname']; ?>" readonly="">

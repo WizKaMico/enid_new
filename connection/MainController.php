@@ -1,4 +1,6 @@
 <?php 
+ use Phppot\DataSource;
+ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 include('connection/LoginSession.php');
 require_once "connection/ApiController.php";
 $portCont = new portalController();
@@ -32,6 +34,7 @@ $filteredEmail = substr($email, 0, $position);
 // Convert to uppercase
 $filteredEmail = strtoupper($filteredEmail);
 
+$activatedSy = $portCont->activatedSyCode();
 $studStat = $portCont->checkTotalStudentForTheActivatedSY();
 $teacherStat = $portCont->checkTotalTeacherForTheActivatedSY();
 
@@ -417,10 +420,15 @@ if (! empty($_GET["action"])) {
 
                 case "request_type":
                     if(isset($_POST['add'])){
-                         $type = $_POST['type'];
+                         $type = strtoupper($_POST['type']);
                          if(!empty($type)) {
+                             $ifexisting = $portCont->checkRequestType($type);
+                             if(empty($ifexisting)){
                              $portCont->addRequestType($type);
-                             header('Location: home.php?view=request&message=success');  
+                             header('Location: home.php?view=request&message=success');
+                             }else{
+                            header('Location: home.php?view=request&message=duplicate');  
+                             }
                          }else{
                              header('Location: home.php?view=request&message=error');  
                          }
@@ -433,12 +441,20 @@ if (! empty($_GET["action"])) {
                         $sycode = $_POST['sycode'];
                         $uid = $_POST['uid'];
                         $request_type = $_POST['request_type'];
+                        $requested_by = $_POST['requested_by'];
                         $note = $_POST['note'];
 
-                        if(!empty($sycode) && !empty($uid) && !empty($request_type) && !empty($note))
+                        if(!empty($sycode) && !empty($uid) && !empty($request_type) && !empty($note) && !empty($requested_by))
                         {
-                            $portCont->addStudentRequest($sycode, $uid, $request_type, $note);
-                            header('Location: home.php?view=request&message=success');  
+                            $checkRequestValidation = $portCont->checkValidRequest($sycode, $uid, $request_type);
+                            if(!empty($checkRequestValidation))
+                            {
+                            header('Location: home.php?view=request&message=duplicate');   
+                            }else{
+                            $portCont->addStudentRequest($sycode, $uid, $request_type, $note, $requested_by);
+                            header('Location: home.php?view=request&message=success');     
+                            }
+                            
                         }else{
                             header('Location: home.php?view=request&message=error');  
                         }
@@ -764,6 +780,90 @@ if (! empty($_GET["action"])) {
                            } 
                         }
                         break;
+
+
+                    case "UniqueGradeSectionSearch":
+                        if(isset($_POST['generate'])){
+                            $gid = $_POST['gid']; 
+                            header('Location: home.php?view=student-accounts&gid='.$gid);
+                        }
+                        break;
+
+                    case "buildingadd":
+                        if(isset($_POST['assign'])){
+                            $mid = $_POST['mid'];
+                            $building = $_POST['building']; 
+                            $room = $_POST['room']; 
+                            if(!empty($mid) && !empty($building) && !empty($room))
+                            {
+                                $portCont->addRoomBuilding($mid, $room, $building);
+                                header('Location: home.php?view=direction');
+                            }
+                        }
+                        break;
+
+                    case "updateDirectionForRoom":
+                        if(isset($_POST['update'])){
+                            $id = $_POST['id'];
+                             $mid = $_POST['mid']; 
+                             $building = $_POST['building'];  
+                             $room = $_POST['room'];  
+                             if(!empty($id) && !empty($mid) && !empty($building) && !empty($room)){
+                                $portCont->updateEditRoomBuilding($id, $mid, $building, $room);
+                                header('Location: home.php?view=direction&message=success');
+                             }else{
+                                header('Location: home.php?view=direction&message=error');
+                             }
+                        }
+                        break;
+
+                    case "preenrollState":
+
+                        if(isset($_POST["Import"])){
+		
+
+                            echo $filename=$_FILES["file"]["tmp_name"];
+                            
+                    
+                             if($_FILES["file"]["size"] > 0)
+                             {
+                    
+                                  $file = fopen($filename, "r");
+                                 while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
+                                 {
+
+                                    $uid = date('Ymd').rand(6666,9999); 
+                                    $sycode = $activatedSy[0]['sycode'];
+                                    $email = $emapData[1];
+                                    $fname = $emapData[2];
+                                    $mname = $emapData[3];
+                                    $lname = $emapData[4];
+                                    $average = $emapData[5];
+                                    $gender = $emapData[6];
+                                    $street = $emapData[7];
+                                    $region_text = $emapData[8];
+                                    $province_text = $emapData[9];
+                                    $city_text = $emapData[10];
+                                   
+
+
+                                    if (!empty($uid) && !empty($sycode) &&  !empty($email) && !empty($fname) && !empty($mname) && !empty($lname)  && !empty($average) && !empty($gender) && !empty($street) && !empty($region_text) && !empty($province_text) && !empty($city_text)) {
+                                        // Perform your database operations here
+                                        $portCont->addPreRegEnrollees($uid, $sycode, $email, $fname, $mname, $lname, $average, $street, $gender, $region_text, $province_text, $city_text);    
+                                        header('Location:home.php?view=enrollment&message=success');
+                                    }else{
+                                        header('Location:home.php?view=enrollment&message=error');
+                                    }
+                    
+                                 }
+                                 fclose($file);
+                             }
+                        }	 
+
+                    break;
+                        
+                       
+                   
 
         
     }

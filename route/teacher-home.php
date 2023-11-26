@@ -31,7 +31,7 @@
                                                     foreach ($alllost as $key => $value) {     
                                          ?>  
                                         <div class="testimonial-item text-center">
-                                            <img class="img-fluid mx-auto mb-4" src="<?php echo $alllost[$key]['image_path']; ?>" style="width: 100%; height: 500px;">
+                                            <img class="img-fluid mx-auto mb-4" src="<?php echo $alllost[$key]['image']; ?>" style="width: 100%; height: 500px;">
                                             <h5 class="mb-1"><?php echo $alllost[$key]['item']; ?></h5>
                                             <p><b>FOUND BY</b> : <?php echo strtoupper($alllost[$key]['fname']); ?> : <b>FOUND IN</b> : <?php echo strtoupper($alllost[$key]['room']); ?></p>
                                         </div>

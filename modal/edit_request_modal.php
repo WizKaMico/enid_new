@@ -17,7 +17,8 @@
                 <div class="col-sm-10">
                     <select name="status" class="form-control">
                        <option value="<?php echo $allRequest[$key]['requeststatus']; ?>"><?php echo $allRequest[$key]['requeststatus']; ?> (CURRENT)</option>
-                       <option value="APPROVED">APPROVED</option>
+                       <option value="PENDING">PENDING</option>
+                       <option value="COMPLETED">COMPLETED</option>
                        <option value="REJECTED">REJECTED</option>
                     </select>
                 </div>

@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-sm-10">
                                              <select class="form-control" name="foundby" id="floatingInput">
-                                                <option value="<?php echo $lostItem[$key]['foundby']; ?>">(<?php echo $lostItem[$key]['foundby']; ?>)-<?php echo $lostItem[$key]['fname']; ?> (current)</option>
+                                                <option value="<?php echo $lostItem[$key]['uid']; ?>">(<?php echo $lostItem[$key]['uid']; ?>)-<?php echo $lostItem[$key]['fname']; ?> (current)</option>
                                                     <?php 
                                                         $allActiveStud = $portCont->getStudentEnrollForCurrentSchoolYear();
                                                         if (!empty($allActiveStud)) {

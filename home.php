@@ -61,6 +61,17 @@
                         });
                     });
                 </script>';
+            } else if($_GET['message'] == 'duplicate') {   
+                echo '
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Duplicate Request",
+                            text: "Request cant be added already had the same request."
+                        });
+                    });
+                </script>';
             } else {
                 echo '
                 <script>
@@ -261,10 +272,12 @@
             <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
             <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
             <script>
-                $(document).ready(function(){
-                    // Function to initialize DataTable and hide alert
+                 $(document).ready(function(){
+                    // Function to initialize DataTable with descending order and hide alert
                     function initializeDataTable(tableId) {
-                        $(tableId).DataTable();
+                        $(tableId).DataTable({
+                            "order": [[0, "desc"]] // Set initial sorting order (column 0, descending)
+                        });
 
                         // Hide alert on close button click
                         $(document).on('click', '.close', function(){
@@ -278,8 +291,29 @@
                     initializeDataTable('#myRequestApprovedSyTable');
                     initializeDataTable('#myRequestRejectedSyTable');
                     initializeDataTable('#myRequestArchiveSyTable');
+                    initializeDataTable('#myRequestCompletedSyTable');
                 });
             </script>
+
+            <script>
+                document.getElementById('searchInput').addEventListener('input', function() {
+                    let searchValue = this.value.trim().toLowerCase();
+                    let options = document.querySelectorAll('#floatingInput option');
+
+                    options.forEach(function(option) {
+                        let text = option.textContent.toLowerCase();
+                        if (text.includes(searchValue)) {
+                            option.style.display = '';
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    });
+                });
+            </script>
+
+
+                  
+
             <?php } else if($_GET['view'] == 'request_history') { ?>
 
 
@@ -306,11 +340,33 @@
                     // Initialize DataTables for different tables
                     initializeDataTable('#myFreshTable');
                     initializeDataTable('#myTransTable');
+                    initializeDataTable('#myPreEnrollTable');
                     initializeDataTable('#myOfficialTable');
                 });
             </script>
-            <?php } else if($_GET['view'] == 'direction') { ?>
 
+              
+            <?php } else if($_GET['view'] == 'direction') { ?>
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>   
+            <script src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'></script>
+            <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js'></script>
+            <script>
+                $(document).ready(function(){
+                    // Function to initialize DataTable and hide alert
+                    function initializeDataTable(tableId) {
+                        $(tableId).DataTable();
+
+                        // Hide alert on close button click
+                        $(document).on('click', '.close', function(){
+                            $('.alert').hide();
+                        });
+                    }
+
+                    // Initialize DataTables for different tables
+                    initializeDataTable('#myRoomTable');
+                });
+            </script>    
             <script src="js/map.js"></script> 
             <script src="js/map-detailedmap-aggrid.js"></script>
             <?php if(!empty($_GET['mid'])) { ?>
@@ -349,6 +405,23 @@
                 }  
                 </script>
 
+                <script>
+                function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+                }
+                </script>
+                
+
             <?php } else if($_GET['view'] == 'student-accounts') { ?>
                 
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -372,6 +445,7 @@
                     initializeDataTable('#myStudentTable');
                 });
             </script>
+            
             <?php } else if($_GET['view'] == 'teacher-accounts') { ?>
             <script src="js/ph-address-selector.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -421,6 +495,21 @@
             </script>
             <?php } else if($_GET['view'] == 'schoolyear') { ?>
             <script src="js/admin-schoolyear-aggrid.js"></script>
+            <script>
+                document.getElementById('floatingInput').addEventListener('change', function() {
+                    var selectedDate = new Date(this.value);
+                    var year = selectedDate.getFullYear();
+                    console.log("Selected year from: " + year);
+                    // You can use 'year' variable to display or perform any action with the extracted year
+                });
+
+                document.getElementById('floatingPassword').addEventListener('change', function() {
+                    var selectedDate = new Date(this.value);
+                    var year = selectedDate.getFullYear();
+                    console.log("Selected year to: " + year);
+                    // You can use 'year' variable to display or perform any action with the extracted year
+                });
+            </script>
 
             <?php } else if($_GET['view'] == 'school_year_detail') { ?> 
             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -591,6 +680,7 @@
                         initializeDataTable('#myMonitoringAttendanceTodayTeacher');
                         initializeDataTable('#myMonitoringAttendanceWeeklyTeacher');
                         initializeDataTable('#myMonitoringAttendanceMonthlyTeacher');
+                        initializeDataTable('#myRoomTable');
                     });
                 </script>
 
@@ -616,6 +706,21 @@
                     // Initialize DataTables for different tables
                     initializeDataTable('#myLost');
                     initializeDataTable('#myFound');
+                });
+            </script>
+            <script>
+                document.getElementById('searchInput').addEventListener('input', function() {
+                    let searchValue = this.value.trim().toLowerCase();
+                    let options = document.querySelectorAll('#floatingInput option');
+
+                    options.forEach(function(option) {
+                        let text = option.textContent.toLowerCase();
+                        if (text.includes(searchValue)) {
+                            option.style.display = '';
+                        } else {
+                            option.style.display = 'none';
+                        }
+                    });
                 });
             </script>
             <?php }  else { ?>

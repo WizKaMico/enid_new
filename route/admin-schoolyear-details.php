@@ -48,6 +48,8 @@
                                                                 <th scope="col">MIN</th>
                                                                 <th scope="col">MAX</th>
                                                                 <th scope="col">CAPACITY</th>
+                                                                <th scope="col">ENROLLED</th>
+                                                                <th scope="col">AVAIL</th>
                                                                 <th scope="col">ROOM</th>
                                                                 <th scope="col">ACTION</th>
                                                             </tr>
@@ -57,6 +59,9 @@
                                                                 $schoolYearInformation = $portCont->getSchoolYearDetailsInformation($sycode);
                                                                 if (!empty($schoolYearInformation)) {
                                                                     foreach ($schoolYearInformation as $key => $value) {     
+                                                                    $sid = $schoolYearInformation[$key]['sid'];
+                                                                    $ActiveCountschoolYearInformation = $portCont->checkTotalEnrolleeForAGivenSectionForActiveSy($sid);
+                                                                    $availSit =  $schoolYearInformation[$key]['student_max'] - $ActiveCountschoolYearInformation[0]['total'];
                                                             ?>
                                                             <tr>
                                                                 <th scope="row"><?php echo $schoolYearInformation[$key]['sid']; ?></th>
@@ -65,6 +70,8 @@
                                                                 <td><?php echo $schoolYearInformation[$key]['min']; ?></td>
                                                                 <td><?php echo $schoolYearInformation[$key]['max']; ?></td>
                                                                 <td><?php echo $schoolYearInformation[$key]['student_max']; ?></td>
+                                                                <td><?php echo $ActiveCountschoolYearInformation[0]['total']; ?></td>
+                                                                <td><?php echo $availSit; ?></td>
                                                                 <td><?php echo $schoolYearInformation[$key]['room']; ?> - <?php echo $schoolYearInformation[$key]['building']; ?></td>
                                                                 <td>
                                                                   
@@ -115,7 +122,6 @@
                                       </form>
 
                                       <div class="bg-light rounded h-100 p-4">
-                                        <h6 class="mb-4">GRADE LEVEL</h6>
                                         <div class="col-sm-12 col-sm-offset-2">
 			                               <div class="row">
                                                 <table id="myGradeTable" class="table table-striped" style="text-align:center;">

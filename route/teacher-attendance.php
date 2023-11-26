@@ -1,6 +1,6 @@
 <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                   <div class="col-sm-12 col-xl-12">
+                   <div class="col-sm-12 col-xl-6">
                         <div class="bg-light rounded h-100 p-4">
                             <h6 class="mb-4">TEACHER ATTENDANCE</h6>
                                     <hr />
@@ -24,22 +24,24 @@
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-today" role="tabpanel" aria-labelledby="pills-today-tab">
                                     NOTE : This is your daily attendance
-                                    <button onclick="printTable()">Print Table</button>
+                                    <button onclick="printTable1()">Print Table</button>
                                     <script>
-                                    function printTable() {
-                                    var table = document.getElementById("myMonitoringAttendanceTodayTeacher");
-                                    if (table) {
-                                        var newWin = window.open('', '_blank');
-                                        newWin.document.write('<html><head><title>Print Table</title></head><body>');
-                                        newWin.document.write('<h1></h1>');
-                                        newWin.document.write(table.outerHTML);
-                                        newWin.document.write('</body></html>');
-                                        newWin.document.close();
-                                        newWin.print();
-                                    } else {
-                                        console.error("Table not found");
+                                    function printTable1() {
+                                        var table = document.getElementById("myMonitoringAttendanceTodayTeacher");
+                                        if (table) {
+                                            var newWin = window.open('', '_blank');
+                                            newWin.document.write('<html><head><title>Print Table</title></head><body>');
+                                            newWin.document.write('<img src="logo/logo.png"/>');
+                                            newWin.document.write('<h1></h1>');
+                                            newWin.document.write(table.outerHTML);
+                                            newWin.document.write('</body></html>');
+                                            newWin.document.close();
+                                            newWin.print();
+                                        } else {
+                                            console.error("Table not found");
+                                        }
                                     }
-                                    }
+
                                     </script>
                                      <table id="myMonitoringAttendanceTodayTeacher" class="table table-striped" style="text-align:center;">
                                                   <thead>
@@ -75,9 +77,9 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-week" role="tabpanel" aria-labelledby="pills-week-tab">
                                     NOTE : This is your weekly attendance
-                                    <button onclick="printTable()">Print Table</button>
+                                    <button onclick="printTable2()">Print Table</button>
                                     <script>
-                                    function printTable() {
+                                    function printTable2() {
                                     var table2 = document.getElementById("myMonitoringAttendanceWeeklyTeacher");
                                     if (table2) {
                                         var newWin2 = window.open('', '_blank');
@@ -126,9 +128,9 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-monthly" role="tabpanel" aria-labelledby="pills-monthly-tab">
                                     NOTE : This is your monthly attendance
-                                    <button onclick="printTable()">Print Table</button>
+                                    <button onclick="printTable3()">Print Table</button>
                                     <script>
-                                    function printTable() {
+                                    function printTable3() {
                                     var table1 = document.getElementById("myMonitoringAttendanceMonthlyTeacher");
                                     if (table1) {
                                         var newWin1 = window.open('', '_blank');
@@ -178,5 +180,38 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-12 col-xl-6">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4">ROOMS</h6>
+                            <table id="myRoomTable" class="table table-striped" style="text-align:center;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">ROOM</th>
+                                                                <th scope="col">BUILDING</th>
+                                                                <th scope="col">SCAN SITE</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php 
+                                                                $schoolYearRoomDetails = $portCont->getSchoolYearDetailsRoom();
+                                                                if (!empty($schoolYearRoomDetails)) {
+                                                                    foreach ($schoolYearRoomDetails as $key => $value) {     
+                                                            ?>
+                                                            <tr>
+                                                                <th scope="row"><?php echo $schoolYearRoomDetails[$key]['id']; ?></th>
+                                                                <td><?php echo $schoolYearRoomDetails[$key]['room']; ?></td>
+                                                                <td><?php echo $schoolYearRoomDetails[$key]['building']; ?></td>
+                                                                <td>
+                                                                <!-- http://localhost/scan.php?room_id=1 -->
+                                                                   <a class="btn btn" href="scan.php?room_id=<?php echo $schoolYearRoomDetails[$key]['id']; ?>" target="_blank">OPEN</a>
+                                                                </td>
+                                                            </tr>
+                                                            <?php } } ?>
+                                                        </tbody>
+                                                    </table>
+
+                        </div>
+                    </div> 
                 </div>
             </div>

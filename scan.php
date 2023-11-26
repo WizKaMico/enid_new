@@ -95,6 +95,8 @@
                 <?php if(!empty($_GET['view'])) { ?>
                 <?php if($_GET['view'] == 'scan')  { ?>
                 <?php include('scanner/home.php'); ?>
+                <?php } else if($_GET['view'] == 'delay')  { ?>
+                <?php include('scanner/delay.php'); ?>
                 <?php } else { ?>
                 <?php include('scanner/home.php'); ?>
                 <?php } ?>
@@ -187,6 +189,30 @@
   // Initial update
   updateClock();
 </script>
+
+<script>
+    // Function to update the countdown and redirect after 5 seconds
+    function countdown() {
+      let seconds = 3;
+      const countdownDisplay = document.getElementById('countdown');
+
+      // Update countdown display every second
+      const interval = setInterval(() => {
+        seconds--;
+        countdownDisplay.textContent = `Countdown: ${seconds}`;
+
+        if (seconds === 0) {
+          clearInterval(interval);
+        //   header('Location:scan.php?view=delay&message=success&uid='.$uid.'&room_id='.$room_id);
+          // Redirect to another page after 5 seconds
+          window.location.href = 'scan.php?view=home&message=success&uid=<?php echo $_GET['uid']; ?>&room_id=<?php echo $_GET['room_id']; ?>'; // Replace with your desired URL
+        }
+      }, 1000);
+    }
+
+    // Start the countdown when the page loads
+    window.onload = countdown;
+  </script>
 </body>
 
 </html>

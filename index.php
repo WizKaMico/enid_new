@@ -44,7 +44,8 @@
                             title: "Login Successful",
                             text: "Your login has been verified successfully."
                         }).then(function() {
-                            window.location.href = "security.php?view=security";
+                            // window.location.href = "security.php?view=security";
+                            window.location.href = "home.php?view=home";
                         });
                     });
                 </script>';

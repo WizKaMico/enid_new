@@ -25,6 +25,7 @@
                                             <thead>
                                                  <tr>
                                                     <th scope="col">ITEM</th>
+                                                    <th scope="col">DES</th>
                                                     <th scope="col">FOUND BY</th>
                                                     <th scope="col">FOUND IN</th>
                                                     <th scope="col">OTHER</th>
@@ -42,11 +43,12 @@
                                                             ?>
                                                             <tr>
                                                                 <th scope="row"><?php echo $lostItem[$key]['item']; ?></th>
+                                                                <td><?php echo $lostItem[$key]['role']; ?></td>
                                                                 <td><?php echo $lostItem[$key]['fname']; ?></td>
                                                                 <td><?php echo $lostItem[$key]['room']; ?> - <?php echo $lostItem[$key]['building']; ?></td>
-                                                                <td><?php echo $lostItem[$key]['another']; ?></td>
+                                                                <td><?php echo $lostItem[$key]['note']; ?></td>
                                                                 <td><?php echo $lostItem[$key]['date']; ?></td>
-                                                                <td><img src="<?php echo $lostItem[$key]['image_path']; ?>" style="width:20%;"></td>
+                                                                <td><img src="<?php echo $lostItem[$key]['image']; ?>" style="width:20%;"></td>
                                                                 <td><?php echo $lostItem[$key]['status']; ?></td>
                                                                 <td>
                                                                 <a href='#editInfoLostModal_<?php echo $lostItem[$key]['fid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editInfoLostModal_<?php echo  $lostItem[$key]['fid']; ?>'>Edit</a>
@@ -65,6 +67,7 @@
                                             <thead>
                                                  <tr>
                                                     <th scope="col">ITEM</th>
+                                                    <th scope="col">DES</th>
                                                     <th scope="col">FOUND BY</th>
                                                     <th scope="col">FOUND IN</th>
                                                     <th scope="col">OTHER</th>
@@ -81,11 +84,12 @@
                                                             ?>
                                                             <tr>
                                                                 <th scope="row"><?php echo $foundItem[$key]['item']; ?></th>
+                                                                <td><?php echo $foundItem[$key]['role']; ?></td>
                                                                 <td><?php echo $foundItem[$key]['fname']; ?></td>
                                                                 <td><?php echo $foundItem[$key]['room']; ?> - <?php echo $foundItem[$key]['building']; ?></td>
-                                                                <td><?php echo $foundItem[$key]['another']; ?></td>
+                                                                <td><?php echo $foundItem[$key]['note']; ?></td>
                                                                 <td><?php echo $foundItem[$key]['date']; ?></td>
-                                                                <td><img src="<?php echo $foundItem[$key]['image_path']; ?>" style="width:20%;"></td>
+                                                                <td><img src="<?php echo $foundItem[$key]['image']; ?>" style="width:20%;"></td>
                                                                 <td><?php echo $foundItem[$key]['status']; ?></td>
                                                             
                                                             </tr>
@@ -126,13 +130,14 @@
                                             <label for="floatingPassword">Item</label>
                                         </div>
                                         <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="searchInput" placeholder="Search for a student...">
                                             <select class="form-control" name="uid" id="floatingInput">
                                                     <?php 
                                                         $allActiveStud = $portCont->getStudentEnrollForCurrentSchoolYear();
                                                         if (!empty($allActiveStud)) {
                                                             foreach ($allActiveStud as $key => $value) {     
                                                     ?>  
-                                                     <option value="<?php echo $allActiveStud[$key]['uid']; ?>">(<?php echo $allActiveStud[$key]['uid']; ?>) - <?php echo $allActiveStud[$key]['fname']; ?></option>       
+                                                     <option value="<?php echo $allActiveStud[$key]['uid']; ?>">(<?php echo $allActiveStud[$key]['uid']; ?>) - <?php echo $allActiveStud[$key]['fname']; ?> (<?php echo $allActiveStud[$key]['role']; ?>)</option>       
                                                     <?php } } ?>
                                             </select>
                                             <label for="floatingInput">Foundby</label>

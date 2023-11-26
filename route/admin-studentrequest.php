@@ -10,14 +10,19 @@
                                         aria-selected="true">ALL REQUEST</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="pills-approved-tab" data-bs-toggle="pill"
-                                        data-bs-target="#pills-approved" type="button" role="tab"
-                                        aria-controls="pills-approved" aria-selected="false">APPROVED REQUEST</button>
+                                    <button class="nav-link" id="pills-pending-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-pending" type="button" role="tab"
+                                        aria-controls="pills-pending" aria-selected="false">PENDING</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-completed-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-completed" type="button" role="tab"
+                                        aria-controls="pills-completed" aria-selected="false">COMPLETED</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="pills-reject-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-reject" type="button" role="tab"
-                                        aria-controls="pills-reject" aria-selected="false">REJECT REQUEST</button>
+                                        aria-controls="pills-reject" aria-selected="false">REJECT</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="pills-archives-tab" data-bs-toggle="pill"
@@ -39,6 +44,7 @@
                                                         <th scope="col">FULLNAME</th>
                                                         <th scope="col">GRADE</th>
                                                         <th scope="col">SECTION</th>
+                                                        <th scope="col">REQUESTED BY</th>
                                                         <th scope="col">ACTION</th>
                                                       </tr>
                                                    </thead>
@@ -56,6 +62,7 @@
                                                     <td><?php echo $allRequest[$key]['fname']; ?></td>
                                                     <td><?php echo $allRequest[$key]['grade']; ?></td>
                                                     <td><?php echo $allRequest[$key]['section_name']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['requested_by']; ?></td>
                                                     <td>
                                                     <a href='#editRequestModal_<?php echo $allRequest[$key]['reqid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editRequestModal_<?php echo $allRequest[$key]['reqid']; ?>'>UPDATE</a> 
                                                     </td>
@@ -65,8 +72,8 @@
                                          </tbody>
                                      </table>
                                 </div>
-                                <div class="tab-pane fade" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
-                                   NOTES : This are all of the approved request for the active school year 
+                                <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-approved-tab">
+                                   NOTES : This are all of the pending request for the active school year 
                                    <hr />
                                     <table id="myRequestApprovedSyTable" class="table table-striped" style="text-align:center;">
                                                   <thead>
@@ -78,12 +85,13 @@
                                                         <th scope="col">FULLNAME</th>
                                                         <th scope="col">GRADE</th>
                                                         <th scope="col">SECTION</th>
+                                                        <th scope="col">REQUESTED BY</th>
                                                         <th scope="col">ACTION</th>
                                                       </tr>
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $allRequest = $portCont->getStudentRequestCurrentSchoolYearApprove();
+                                                $allRequest = $portCont->getStudentRequestCurrentSchoolYearPending();
                                                 if (!empty($allRequest)) {
                                                     foreach ($allRequest as $key => $value) {     
                                                 ?>
@@ -95,9 +103,49 @@
                                                     <td><?php echo $allRequest[$key]['fname']; ?></td>
                                                     <td><?php echo $allRequest[$key]['grade']; ?></td>
                                                     <td><?php echo $allRequest[$key]['section_name']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['requested_by']; ?></td>
                                                     <td>
                                                     <a href='#editRequestModal_<?php echo $allRequest[$key]['reqid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editRequestModal_<?php echo $allRequest[$key]['reqid']; ?>'>UPDATE</a> 
                                                     </td>
+                                                </tr>
+                                                <?php include('modal/edit_request_modal.php'); ?>
+                                            <?php } } ?>
+                                         </tbody>
+                                     </table>
+                                </div>
+                                <div class="tab-pane fade" id="pills-completed" role="tabpanel" aria-labelledby="pills-approved-tab">
+                                   NOTES : This are all of the completed request for the active school year 
+                                   <hr />
+                                   <table id="myRequestCompletedSyTable" class="table table-striped" style="text-align:center;">
+                                                  <thead>
+                                                      <tr>
+                                                        <th scope="col">ID</th>
+                                                        <th scope="col">TYPE</th>
+                                                        <th scope="col">LRN</th>
+                                                        <th scope="col">DATE</th>
+                                                        <th scope="col">FULLNAME</th>
+                                                        <th scope="col">GRADE</th>
+                                                        <th scope="col">SECTION</th>
+                                                        <th scope="col">REQUESTED BY</th>
+                                                
+                                                      </tr>
+                                                   </thead>
+                                                 <tbody>
+                                                <?php 
+                                                $allRequest = $portCont->getStudentRequestCurrentSchoolYearCompleted();
+                                                if (!empty($allRequest)) {
+                                                    foreach ($allRequest as $key => $value) {     
+                                                ?>
+                                                <tr>
+                                                    <td><a href="home.php?view=request_history&reqid=<?php echo $allRequest[$key]['reqid']; ?>"><?php echo $allRequest[$key]['reqid']; ?></a></td>
+                                                    <td><?php echo $allRequest[$key]['type']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['uid']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['requestcreationdate']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['fname']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['grade']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['section_name']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['requested_by']; ?></td>
+                                                    
                                                 </tr>
                                                 <?php include('modal/edit_request_modal.php'); ?>
                                             <?php } } ?>
@@ -117,6 +165,7 @@
                                                         <th scope="col">FULLNAME</th>
                                                         <th scope="col">GRADE</th>
                                                         <th scope="col">SECTION</th>
+                                                        <th scope="col">REQUESTED BY</th>
                                                         <th scope="col">ACTION</th>
                                                       </tr>
                                                    </thead>
@@ -134,6 +183,7 @@
                                                     <td><?php echo $allRequest[$key]['fname']; ?></td>
                                                     <td><?php echo $allRequest[$key]['grade']; ?></td>
                                                     <td><?php echo $allRequest[$key]['section_name']; ?></td>
+                                                    <td><?php echo $allRequest[$key]['requested_by']; ?></td>
                                                     <td>
                                                     <a href='#editRequestModal_<?php echo $allRequest[$key]['reqid']; ?>' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#editRequestModal_<?php echo $allRequest[$key]['reqid']; ?>'>UPDATE</a> 
                                                     </td>
@@ -245,19 +295,23 @@
                                             <label for="floatingInput">SYCODE</label>
                                         </div>
                                         <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="searchInput" placeholder="Search for a student...">
                                             <select class="form-control" name="uid" id="floatingInput">
-                                                    <?php 
-                                                        $allActiveStud = $portCont->getStudentEnrollForCurrentSchoolYear();
-                                                        if (!empty($allActiveStud)) {
-                                                            foreach ($allActiveStud as $key => $value) {     
-                                                    ?>  
-                                                     <option value="<?php echo $allActiveStud[$key]['uid']; ?>">(<?php echo $allActiveStud[$key]['uid']; ?>) - <?php echo $allActiveStud[$key]['fname']; ?></option>       
-                                                    <?php } } ?>
+                                                <?php 
+                                                    $allActiveStud = $portCont->getStudentEnrollForCurrentSchoolYear();
+                                                    if (!empty($allActiveStud)) {
+                                                        foreach ($allActiveStud as $key => $value) {     
+                                                ?>  
+                                                <option value="<?php echo $allActiveStud[$key]['uid']; ?>">
+                                                    (<?php echo $allActiveStud[$key]['uid']; ?>) - <?php echo $allActiveStud[$key]['fname']; ?>
+                                                </option>       
+                                                <?php } } ?>
                                             </select>
                                             <label for="floatingInput">STUDENT</label>
                                         </div>
+
                                         <div class="form-floating mb-3">
-                                            <select class="form-control" name="request_type" id="floatingInput">
+                                            <select class="form-control" name="request_type">
                                                     <?php 
                                                         $allRequestType = $portCont->getAllRequestType();
                                                         if (!empty($allRequestType)) {
@@ -268,6 +322,12 @@
                                             </select>
                                             <label for="floatingInput">REQUEST TYPE</label>
                                         </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="requested_by" placeholder="Requested By">
+                                            <label for="floatingInput">REQUESTED BY</label>
+                                        </div>
+
                                         <div class="form-floating mb-3">
                                             <textarea cols="5" rows="10" class="form-control" name="note"></textarea>
                                             <label for="floatingInput">NOTE</label>
@@ -280,3 +340,5 @@
                     </div>
                 </div>
             </div>
+
+
