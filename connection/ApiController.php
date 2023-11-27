@@ -2377,6 +2377,25 @@ class portalController extends DBController
         $this->insertDB($query, $params);
     }
 
+    function myAttendanceMonitoringOverallNoSpecificMonthly()
+    {
+        
+        $query = "SELECT *,
+        MONTH(TSMA.date_inserted) AS current_month
+ FROM tbl_school_monitoring_attendance TSMA
+ LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id
+ LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
+ LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid
+ LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid
+ WHERE TSSR.sycode IN (
+     SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED'
+ )
+ AND MONTH(TSMA.date_inserted) = MONTH(CURDATE())";
+
+        $allMonitoring = $this->getDBResult($query);
+        return $allMonitoring;
+    }
+
 
     function myAttendanceMonitoringOverallNoSpecific()
     {
@@ -2407,18 +2426,49 @@ class portalController extends DBController
         // = TSYDS.sid WHERE TSSR.current_level = ? AND TSSR.current_section = ? AND TSSR.sycode IN (SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED')"; 
         $query = "SELECT *,
         WEEK(TSMA.date_inserted) AS current_week
- FROM tbl_school_monitoring_attendance TSMA
- LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id
- LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
- LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid
- LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid
- WHERE TSSR.current_level = ? 
-   AND TSSR.current_section = ? 
-   AND TSSR.sycode IN (
+        FROM tbl_school_monitoring_attendance TSMA
+        LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id
+        LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
+        LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid
+        LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid
+        WHERE TSSR.current_level = ? 
+        AND TSSR.current_section = ? 
+        AND TSSR.sycode IN (
+            SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED'
+        )
+        AND WEEK(TSMA.date_inserted) = WEEK(CURDATE());";
+            $params = array(
+                    
+                array(
+                    "param_type" => "i",
+                    "param_value" => $gid
+                ),
+                array(
+                    "param_type" => "i",
+                    "param_value" => $sid
+                )
+
+            );
+
+        $allMonitoring = $this->getDBResult($query,$params);
+        return $allMonitoring;
+    }
+
+    function myAttendanceMonitoringOverallNoSpecificSearchableMonthly($gid, $sid)
+    {
+        $query = "SELECT *,
+        MONTH(TSMA.date_inserted) AS current_month
+        FROM tbl_school_monitoring_attendance TSMA
+        LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id
+        LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
+        LEFT JOIN tbl_school_year_details_grade TSYDG ON TSSR.current_level = TSYDG.gid
+        LEFT JOIN tbl_school_year_details_section TSYDS ON TSSR.current_section = TSYDS.sid
+        WHERE TSSR.current_level = ? 
+        AND TSSR.current_section = ? 
+        AND TSSR.sycode IN (
        SELECT TUSSY.sycode FROM tbl_user_school_year TUSSY WHERE TUSSY.status = 'ACTIVATED'
    )
-   AND WEEK(TSMA.date_inserted) = WEEK(CURDATE());
- ";
+   AND MONTH(TSMA.date_inserted) = MONTH(CURDATE());";
             $params = array(
                     
                 array(

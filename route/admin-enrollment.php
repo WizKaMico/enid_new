@@ -14,11 +14,11 @@
                                         data-bs-target="#pills-trans" type="button" role="tab"
                                         aria-controls="pills-trans" aria-selected="false">NEW ENROLLEE (TRANS)</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
+                                <!-- <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="pills-preenroll1-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-preenroll1" type="button" role="tab"
                                         aria-controls="pills-preenroll1" aria-selected="false">PRE-ENROLL</button>
-                                </li>
+                                </li> -->
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="pills-reenroll-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-reenroll" type="button" role="tab"
@@ -124,7 +124,7 @@
                                
                                 </div>
 
-                                <div class="tab-pane fade" id="pills-preenroll1" role="tabpanel" aria-labelledby="pills-preenroll1-tab">
+                                <!-- <div class="tab-pane fade" id="pills-preenroll1" role="tabpanel" aria-labelledby="pills-preenroll1-tab">
                                 NOTE : By Pre-enrolling student   
                                 <div class="col-sm-12 col-sm-offset-2">
                                                 <hr />
@@ -159,7 +159,7 @@
                                                     </table>
                                                 </div>
                                               </div>                                              
-                                </div>                                       
+                                </div>                                        -->
 
                                 <div class="tab-pane fade" id="pills-reenroll" role="tabpanel" aria-labelledby="pills-reenroll-tab">
                                 NOTE : By re-enrolling a current student you need to understand that this is the list of the currently enrolled student and you are going to move them to the next grade
@@ -241,11 +241,11 @@
                                         data-bs-target="#pills-transferee" type="button" role="tab"
                                         aria-controls="pills-transferee" aria-selected="false">TRANSFEREE</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
+                                <!-- <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="pills-preenroll-tab" data-bs-toggle="pill"
                                         data-bs-target="#pills-preenroll" type="button" role="tab"
                                         aria-controls="pills-preenroll" aria-selected="false">PRE-ENROLL</button>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-newstudent" role="tabpanel" aria-labelledby="pills-newstudent-tab">
@@ -402,7 +402,7 @@
                                     </form>     
                                 </div>
 
-                                <div class="tab-pane fade" id="pills-preenroll" role="tabpanel" aria-labelledby="pills-preenroll-tab">
+                                <!-- <div class="tab-pane fade" id="pills-preenroll" role="tabpanel" aria-labelledby="pills-preenroll-tab">
                                 NOTE : Your are now upload pre-enrollee
                                 <form class="form-horizontal well" action="home.php?view=enrollment&action=preenrollState" method="post" name="upload_excel" enctype="multipart/form-data">
                                
@@ -414,7 +414,7 @@
                                         <button type="submit" id="submit"  style="width:100%;" name="Import" class="btn btn-primary">Upload</button>
                                    
                               </form>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

@@ -216,7 +216,7 @@
                                                 <?php 
                                                  $sid = $_GET['sid'];
                                                  $gid = $_GET['gid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecificSearchable($gid, $sid);
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecificSearchableMonthly($gid, $sid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
@@ -251,7 +251,7 @@
                                                    </thead>
                                                  <tbody>
                                                 <?php 
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecific();
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallNoSpecificMonthly();
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
