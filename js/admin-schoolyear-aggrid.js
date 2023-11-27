@@ -17,8 +17,32 @@ var gridOptionsSchoolYear = {
                   return link;
                 },
           } ,
-          { headerName: 'START', field: 'year_from' },
-          { headerName: 'END', field: 'year_to' },
+          {
+            headerName: 'START',
+            field: 'year_from',
+            cellRenderer: function (params) {
+              if (params.value.includes('-')) {
+                // Display the date as it is for complete dates
+                return params.value;
+              } else {
+                // Display the year-only value
+                return params.value;
+              }
+            },
+          },
+          {
+            headerName: 'END',
+            field: 'year_to',
+            cellRenderer: function (params) {
+              if (params.value.includes('-')) {
+                // Display the date as it is for complete dates
+                return params.value;
+              } else {
+                // Display the year-only value
+                return params.value;
+              }
+            },
+          },
           { headerName: 'CREATION', field: 'date_created' },
           { headerName: 'STATUS', field: 'status' },
                  
