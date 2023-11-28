@@ -2204,7 +2204,7 @@ class portalController extends DBController
 
         date_default_timezone_get('Asia/Manila');
         $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
-        WHERE TSSR.current_section = ? AND DATE(TSMA.date_inserted) = CURDATE()"; 
+        WHERE TSSR.current_section = ? AND DATE(TSMA.date_inserted) = CURDATE() AND TSYDM.building != 'CANTEEN'"; 
 
         $params = array(
            
@@ -2272,7 +2272,7 @@ class portalController extends DBController
     {
         date_default_timezone_get('Asia/Manila');
         $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
-        WHERE TSSR.current_section = ?"; 
+        WHERE TSSR.current_section = ? AND TSYDM.building != 'CANTEEN'"; 
 
         $params = array(
            

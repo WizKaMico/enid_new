@@ -24,25 +24,7 @@
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-today" role="tabpanel" aria-labelledby="pills-today-tab">
                                     NOTE : This is your daily attendance
-                                    <button onclick="printTable1()">Print Table</button>
-                                    <script>
-                                    function printTable1() {
-                                        var table = document.getElementById("myMonitoringAttendanceTodayTeacher");
-                                        if (table) {
-                                            var newWin = window.open('', '_blank');
-                                            newWin.document.write('<html><head><title>Print Table</title></head><body>');
-                                            newWin.document.write('<img src="logo/logo.png"/>');
-                                            newWin.document.write('<h1></h1>');
-                                            newWin.document.write(table.outerHTML);
-                                            newWin.document.write('</body></html>');
-                                            newWin.document.close();
-                                            newWin.print();
-                                        } else {
-                                            console.error("Table not found");
-                                        }
-                                    }
-
-                                    </script>
+                                    <a href="printattendance/daily.php?sid=<?php echo $tinfo[0]['sid']; ?>">Print Table</a>
                                      <table id="myMonitoringAttendanceTodayTeacher" class="table table-striped" style="text-align:center;">
                                                   <thead>
                                                       <tr>
@@ -77,23 +59,8 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-week" role="tabpanel" aria-labelledby="pills-week-tab">
                                     NOTE : This is your weekly attendance
-                                    <button onclick="printTable2()">Print Table</button>
-                                    <script>
-                                    function printTable2() {
-                                    var table2 = document.getElementById("myMonitoringAttendanceWeeklyTeacher");
-                                    if (table2) {
-                                        var newWin2 = window.open('', '_blank');
-                                        newWin2.document.write('<html><head><title>Print Table</title></head><body>');
-                                        newWin2.document.write('<h1></h1>');
-                                        newWin2.document.write(table2.outerHTML);
-                                        newWin2.document.write('</body></html>');
-                                        newWin2.document.close();
-                                        newWin2.print();
-                                    } else {
-                                        console.error("Table not found");
-                                    }
-                                    }
-                                    </script>
+                                    <a href="printattendance/print.php?sid=<?php echo $tinfo[0]['sid']; ?>">Print Table</a>
+                                    
                                     <table id="myMonitoringAttendanceWeeklyTeacher" class="table table-striped" style="text-align:center;">
                                                   <thead>
                                                       <tr>
@@ -128,23 +95,8 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-monthly" role="tabpanel" aria-labelledby="pills-monthly-tab">
                                     NOTE : This is your monthly attendance
-                                    <button onclick="printTable3()">Print Table</button>
-                                    <script>
-                                    function printTable3() {
-                                    var table1 = document.getElementById("myMonitoringAttendanceMonthlyTeacher");
-                                    if (table1) {
-                                        var newWin1 = window.open('', '_blank');
-                                        newWin1.document.write('<html><head><title>Print Table</title></head><body>');
-                                        newWin1.document.write('<h1>PRINTING</h1>');
-                                        newWin1.document.write(table1.outerHTML);
-                                        newWin1.document.write('</body></html>');
-                                        newWin1.document.close();
-                                        newWin1.print();
-                                    } else {
-                                        console.error("Table not found");
-                                    }
-                                    }
-                                    </script>
+                                    <a href="printattendance/print.php?sid=<?php echo $tinfo[0]['sid']; ?>">Print Table</a>
+                
                                     <table id="myMonitoringAttendanceMonthlyTeacher" class="table table-striped" style="text-align:center;">
                                                   <thead>
                                                       <tr>
