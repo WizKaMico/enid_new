@@ -28,6 +28,7 @@ if (! empty($_GET["action"])) {
                                 $portCont->updateScannedUid($uid,$room_id,$current_time,$date_inserted);
                                 header('Location:scan.php?view=delay&message=success&uid='.$uid.'&room_id='.$room_id);
                             }else{
+                                $portCont->updateScannedUid($uid,$room_id,$current_time,$date_inserted);
                                 header('Location:scan.php?view=home&message=success&uid='.$uid.'&room_id='.$room_id);
                             }
                           

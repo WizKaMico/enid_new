@@ -2235,6 +2235,52 @@ class portalController extends DBController
         return $userCredentials;
     }
 
+    function myAttendanceMonitoringWeekGroup($uid)
+    {
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * 
+        FROM tbl_school_monitoring_attendance TSMA 
+        LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id 
+        WHERE TSMA.uid = ? 
+          AND YEARWEEK(TSMA.date_inserted) = YEARWEEK(CURDATE())
+        GROUP BY YEARWEEK(TSMA.date_inserted)"; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myAttendanceMonitorinMonthlyGroup($uid)
+    {
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * 
+        FROM tbl_school_monitoring_attendance TSMA 
+        LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id 
+        WHERE TSMA.uid = ? 
+          AND YEAR(TSMA.date_inserted) = YEAR(CURDATE())
+          AND MONTH(TSMA.date_inserted) = MONTH(CURDATE())
+        GROUP BY YEAR(TSMA.date_inserted), MONTH(TSMA.date_inserted)
+        "; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "s",
+                "param_value" => $uid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
 
     function myAttendanceMonitoringOverallGroup($uid)
     {

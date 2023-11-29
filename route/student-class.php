@@ -98,7 +98,7 @@
                                                  <tbody>
                                                 <?php 
                                                 $uid = $userSession[0]['uid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallGroup($uid);
+                                                $attendanceToday = $portCont->myAttendanceMonitoringWeekGroup($uid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
@@ -122,7 +122,7 @@
                                                  <tbody>
                                                 <?php 
                                                 $uid = $userSession[0]['uid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallGroup($uid);
+                                                $attendanceToday = $portCont->myAttendanceMonitorinMonthlyGroup($uid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
