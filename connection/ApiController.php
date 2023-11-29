@@ -2243,7 +2243,7 @@ class portalController extends DBController
         LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id 
         WHERE TSMA.uid = ? 
           AND YEARWEEK(TSMA.date_inserted) = YEARWEEK(CURDATE())
-        GROUP BY YEARWEEK(TSMA.date_inserted)"; 
+        "; 
 
         $params = array(
            
@@ -2266,7 +2266,7 @@ class portalController extends DBController
         WHERE TSMA.uid = ? 
           AND YEAR(TSMA.date_inserted) = YEAR(CURDATE())
           AND MONTH(TSMA.date_inserted) = MONTH(CURDATE())
-        GROUP BY YEAR(TSMA.date_inserted), MONTH(TSMA.date_inserted)
+        
         "; 
 
         $params = array(
@@ -2331,6 +2331,80 @@ class portalController extends DBController
         $userCredentials = $this->getDBResult($query, $params);
         return $userCredentials;
     }
+
+    function myAttendanceMonitoringOverallTeacherWeeek($sid)
+    {
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * FROM tbl_school_monitoring_attendance TSMA LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid
+        WHERE TSSR.current_section = ? AND TSYDM.building != 'CANTEEN' AND YEARWEEK(TSMA.date_inserted) = YEARWEEK(CURDATE())
+        "; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+    function myAttendanceMonitoringOverallTeacherMonth($sid)
+    {
+        date_default_timezone_get('Asia/Manila');
+        $query = "SELECT * 
+        FROM tbl_school_monitoring_attendance TSMA 
+        LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id 
+        LEFT JOIN tbl_school_student_record TSSR ON TSMA.uid = TSSR.uid 
+        WHERE TSSR.current_section = ? 
+          AND TSYDM.building != 'CANTEEN' 
+          AND YEAR(TSMA.date_inserted) = YEAR(CURDATE()) 
+          AND MONTH(TSMA.date_inserted) = MONTH(CURDATE())
+        "; 
+
+        $params = array(
+           
+            array(
+                "param_type" => "i",
+                "param_value" => $sid
+            )
+        );
+        
+        $userCredentials = $this->getDBResult($query, $params);
+        return $userCredentials;
+    }
+
+
+
+
+    
+
+
+    // function myAttendanceMonitoringWeekGroup($uid)
+    // {
+
+       
+    //     date_default_timezone_get('Asia/Manila');
+    //     $query = "SELECT * 
+    //     FROM tbl_school_monitoring_attendance TSMA 
+    //     LEFT JOIN tbl_school_year_details_map TSYDM ON TSMA.room = TSYDM.id 
+    //     WHERE TSMA.uid = ? 
+    //       AND YEARWEEK(TSMA.date_inserted) = YEARWEEK(CURDATE())
+    //     GROUP BY YEARWEEK(TSMA.date_inserted)"; 
+
+    //     $params = array(
+           
+    //         array(
+    //             "param_type" => "s",
+    //             "param_value" => $uid
+    //         )
+    //     );
+        
+    //     $userCredentials = $this->getDBResult($query, $params);
+    //     return $userCredentials;
+    // }
 
     function allSectionForSy()
     {

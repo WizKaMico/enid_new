@@ -76,7 +76,7 @@
                                                  <tbody>
                                                 <?php 
                                                 $sid = $tinfo[0]['sid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallTeacher($sid);
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallTeacherWeeek($sid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
@@ -112,7 +112,7 @@
                                                  <tbody>
                                                 <?php 
                                                 $sid = $tinfo[0]['sid'];
-                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallTeacher($sid);
+                                                $attendanceToday = $portCont->myAttendanceMonitoringOverallTeacherMonth($sid);
                                                 if (!empty($attendanceToday)) {
                                                     foreach ($attendanceToday as $key => $value) {     
                                                 ?>
